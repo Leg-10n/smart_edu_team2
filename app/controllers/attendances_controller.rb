@@ -1,4 +1,5 @@
 class AttendancesController < ApplicationController
+  before_action :require_teacher
   before_action :set_attendance, only: %i[show edit update destroy]
   include Pagy::Backend
 
@@ -13,8 +14,8 @@ class AttendancesController < ApplicationController
 
   # GET /attendances/new
   def new
-    @q = User.ransack(params[:q])
-    @users = @q.result(distinct: true)
+    @q = Student.ransack(params[:q])
+    @students = @q.result(distinct: true)
     @attendances = Attendance.order(timestamp: :desc).limit(20).includes(:student)
     respond_to do |format|
       format.html # For normal page loads
@@ -29,13 +30,12 @@ class AttendancesController < ApplicationController
   # POST /attendances or /attendances.json
   def create
     timezone = cookies[:timezone] || "UTC"
-  
     Time.use_zone(timezone) do
-      permitted_params = params.permit(:user_id)  # Permit only user_id
-      permitted_params[:timestamp] = Time.current  # Manually set timestamp in the correct zone
-  
-      @attendance = Attendance.new(permitted_params)
-  
+      p = params.permit(:student_id).merge(
+        user_id: Current.user&.id,  # Prevent nil user error
+        timestamp: Time.current
+      )
+      @attendance = Attendance.new(p)
       if @attendance.save
         respond_to do |format|
           format.html { redirect_to new_attendance_path(request.parameters), notice: "Attendance recorded." }
@@ -49,10 +49,6 @@ class AttendancesController < ApplicationController
       end
     end
   end
-  
-  
-  
-  
 
   # PATCH/PUT /attendances/1 or /attendances/1.json
   def update

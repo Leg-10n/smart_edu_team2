@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   root "home#index"
 
-  get 'qrcodes', to: 'qrcodes#show'  # Updated route for the QR code
-  get 'scan_qr', to: 'qrcodes#scan'
+  get "qrcodes", to: "qrcodes#show"  # Updated route for the QR code
+  get "scan_qr", to: "qrcodes#scan"
 
-  resources :users, only: [:index, :edit, :update]
+  resources :users, only: [ :index, :show, :edit, :update, :new, :create ]
 end

@@ -1,0 +1,28 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "9365f3108939e4c8435f14131485912259552c717d892f40d8da11f31ddb669d",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/users_controller.rb",
+      "line": 61,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:email_address, :password, :password_confirmation, :role)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "check for current user role is admin already so let's ignore this warning for now"
+    }
+  ],
+  "brakeman_version": "7.0.0"
+}

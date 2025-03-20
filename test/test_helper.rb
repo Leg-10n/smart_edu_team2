@@ -7,8 +7,8 @@ def ci?
   ENV["CI"] == "true"
 end
 module SignInHelper
-  def sign_in
-    user = users(:one)
+  def sign_in(user_fixture)
+    user = users(user_fixture)
     post session_url, params: { email_address: user.email_address, password: "password" }
   end
 end

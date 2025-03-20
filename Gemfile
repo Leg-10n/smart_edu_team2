@@ -77,4 +77,4 @@ gem "discard", "~> 1.4"
 
 gem "pry-byebug", "~> 3.10"
 
-gem 'jquery-rails'
+gem "jquery-rails"
