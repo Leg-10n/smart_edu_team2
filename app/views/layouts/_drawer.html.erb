@@ -57,14 +57,14 @@
 
       <% if authenticated? %>
         <li>
-          <%= link_to session_path, data: {turbo_method: :delete} do %>
-            <i class="fas fa-sign-out-alt"></i> Logout
+          <%= link_to new_session_path do %>
+            <i class="fas fa-sign-in-alt"></i> Login
           <% end %>
         </li>
       <% else %>
         <li>
-          <%= link_to new_session_path do %>
-            <i class="fas fa-sign-in-alt"></i> Login
+          <%= link_to session_path, data: {turbo_method: :delete} do %>
+            <i class="fas fa-sign-out-alt"></i> Logout
           <% end %>
         </li>
       <% end %>
