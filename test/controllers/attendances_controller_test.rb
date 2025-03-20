@@ -51,7 +51,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
       sign_in(user)
       get attendances_url
       assert_redirected_to root_path
-      assert_equal "You must be a teacher to access requested page.", flash[:alert]
+      assert_equal "You must have role [ teacher ] to access the requested page.", flash[:alert]
     end
   end
 
@@ -60,7 +60,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
       sign_in(user)
       get attendance_url(attendances(:attendance_5))
       assert_redirected_to root_path
-      assert_equal "You must be a teacher to access requested page.", flash[:alert]
+      assert_equal "You must have role [ teacher ] to access the requested page.", flash[:alert]
     end
   end
 
@@ -73,7 +73,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
         post attendances_url, params: { attendance: { student_id: student.id, user_id: teacher.id, timestamp: Time.now } }
       end
       assert_redirected_to root_path
-      assert_equal "You must be a teacher to access requested page.", flash[:alert]
+      assert_equal "You must have role [ teacher ] to access the requested page.", flash[:alert]
     end
   end
 
@@ -82,7 +82,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
       sign_in(user)
       get edit_attendance_url(@attendance)
       assert_redirected_to root_path
-      assert_equal "You must be a teacher to access requested page.", flash[:alert]
+      assert_equal "You must have role [ teacher ] to access the requested page.", flash[:alert]
     end
   end
 
@@ -97,7 +97,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
       updating_attendance.reload
       assert_equal original_timestamp, updating_attendance.timestamp
       assert_redirected_to root_path
-      assert_equal "You must be a teacher to access requested page.", flash[:alert]
+      assert_equal "You must have role [ teacher ] to access the requested page.", flash[:alert]
     end
   end
 end
