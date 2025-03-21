@@ -11,8 +11,8 @@
 # end
 
 # config/initializers/omise.rb
-require 'omise'
+require "omise"
 
 # Just use the test keys directly for now
-Omise.api_key = 'skey_test_631ivir9myz0s778fk2'
-Omise.public_api_key = 'pkey_test_631iviqr16qva0uvdrt'
+Omise.api_key = "skey_test_631ivir9myz0s778fk2"
+Omise.public_api_key = "pkey_test_631iviqr16qva0uvdrt"

@@ -1,8 +1,8 @@
 class PaymentsController < ApplicationController
   include Authentication
 
-  before_action :require_authentication, except: [:success, :failure, :webhook]
-  skip_before_action :verify_authenticity_token, only: [:webhook]
+  before_action :require_authentication, except: [ :success, :failure, :webhook ]
+  skip_before_action :verify_authenticity_token, only: [ :webhook ]
 
   def new
     # Display payment form
@@ -204,7 +204,7 @@ class PaymentsController < ApplicationController
     if subscription
       # Process the renewal
       new_end_date = subscription.expires_at + 1.month
-      subscription.update(expires_at: new_end_date, status: 'active')
+      subscription.update(expires_at: new_end_date, status: "active")
 
       # Create a new payment record if there's a charge
       if event["charge"].present? && event["charge"]["id"].present?

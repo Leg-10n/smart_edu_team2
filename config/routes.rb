@@ -24,31 +24,31 @@ Rails.application.routes.draw do
   get "scan_qr", to: "qrcodes#scan"
 
   resources :users, only: [ :index, :show, :edit, :update, :new, :create ]
-  resources :subscriptions, only: [:index, :new, :create, :show]
-  resources :payments, only: [:new, :create, :show]
-  get 'payment_success', to: 'payments#success'
-  get 'payment_failure', to: 'payments#failure'
+  resources :subscriptions, only: [ :index, :new, :create, :show ]
+  resources :payments, only: [ :new, :create, :show ]
+  get "payment_success", to: "payments#success"
+  get "payment_failure", to: "payments#failure"
 
-  resources :subscriptions, only: [:index, :new, :create, :show] do
-    post 'cancel', on: :member
+  resources :subscriptions, only: [ :index, :new, :create, :show ] do
+    post "cancel", on: :member
   end
-  resources :payments, only: [:new, :create, :show]
-  get 'payment_success', to: 'payments#success'
-  get 'payment_failure', to: 'payments#failure'
-  post 'omise_webhook', to: 'payments#webhook'
+  resources :payments, only: [ :new, :create, :show ]
+  get "payment_success", to: "payments#success"
+  get "payment_failure", to: "payments#failure"
+  post "omise_webhook", to: "payments#webhook"
 
   namespace :admin do
-    resources :subscriptions, only: [:index, :show] do
-      post 'extend', on: :member
+    resources :subscriptions, only: [ :index, :show ] do
+      post "extend", on: :member
     end
   end
 
-  resources :subscriptions, only: [:index, :new, :create, :show] do
-    post 'cancel', on: :member
+  resources :subscriptions, only: [ :index, :new, :create, :show ] do
+    post "cancel", on: :member
   end
 
-  resources :payments, only: [:new, :create, :show]
-  get 'payment_success', to: 'payments#success'
-  get 'payment_failure', to: 'payments#failure'
-  post 'omise_webhook', to: 'payments#webhook'
+  resources :payments, only: [ :new, :create, :show ]
+  get "payment_success", to: "payments#success"
+  get "payment_failure", to: "payments#failure"
+  post "omise_webhook", to: "payments#webhook"
 end

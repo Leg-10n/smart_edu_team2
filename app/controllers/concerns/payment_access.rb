@@ -35,14 +35,14 @@ module PaymentAccess
   def current_user_has_active_subscription?
     return false unless authenticated?  # Safety check
 
-    Current.user.subscription_status == 'active' &&
+    Current.user.subscription_status == "active" &&
       (Current.user.subscription_end_date.nil? || Current.user.subscription_end_date > Time.now)
   end
 
   def current_user_in_grace_period?
     return false unless authenticated?  # Safety check
 
-    Current.user.subscription_status == 'grace' &&
+    Current.user.subscription_status == "grace" &&
       Current.user.subscription_end_date &&
       Current.user.subscription_end_date > Time.now
   end

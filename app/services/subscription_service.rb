@@ -31,54 +31,54 @@ class SubscriptionService
         omise_charge_id: charge.id
       )
 
-      return subscription
+      subscription
     rescue Omise::Error => e
       Rails.logger.error "Omise payment error: #{e.message}"
-      return nil
+      nil
     end
   end
 
   def self.activate_subscription(subscription)
     subscription.update(
-      status: 'active',
+      status: "active",
       expires_at: 1.month.from_now
     )
   end
 
   def self.enter_grace_period(subscription)
     subscription.update(
-      status: 'grace',
+      status: "grace",
       expires_at: Time.now + GRACE_PERIOD_DAYS.days
     )
   end
 
   def self.deactivate_subscription(subscription)
     subscription.update(
-      status: 'expired'
+      status: "expired"
     )
   end
 
   def self.process_subscription_renewal(subscription)
     # Update the subscription end date
     new_end_date = subscription.expires_at + 1.month
-    subscription.update(expires_at: new_end_date, status: 'active')
+    subscription.update(expires_at: new_end_date, status: "active")
   end
 
   def self.process_subscription_cancellation(subscription)
     # Update subscription status
-    subscription.update(status: 'canceled')
+    subscription.update(status: "canceled")
   end
 
   def self.check_for_expired_subscriptions
     # Find subscriptions that have expired
     expired_subscriptions = Subscription.where(
       "status IN (?) AND expires_at <= ?",
-      ['active', 'grace'],
+      [ "active", "grace" ],
       Time.now
     )
 
     expired_subscriptions.each do |subscription|
-      if subscription.status == 'active'
+      if subscription.status == "active"
         # Move to grace period
         enter_grace_period(subscription)
       else

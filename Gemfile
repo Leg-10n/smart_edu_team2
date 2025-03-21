@@ -25,7 +25,7 @@ gem "tzinfo-data", platforms: %i[ jruby mswin mingw x64_mingw ]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
-gem 'solid_queue', github: 'basecamp/solid_queue', branch: 'main'
+gem "solid_queue", github: "basecamp/solid_queue", branch: "main"
 gem "solid_cable"
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -79,4 +79,4 @@ gem "pry-byebug", "~> 3.10"
 
 gem "jquery-rails"
 
-gem 'omise'
+gem "omise"
