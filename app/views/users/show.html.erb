@@ -1,0 +1,15 @@
+<% content_for :title, "Show User Information" %>
+<div class="flex justify-center">
+  <%= render @user %>
+</div>
+<div class="mt-8 flex justify-center space-x-4">
+  <%= link_to edit_user_path(@user), class: "btn btn-primary" do %>
+    <i class="fas fa-edit"></i> Edit this user
+  <% end %>
+  <%= link_to users_path, class: "btn btn-secondary" do %>
+    <i class="fas fa-arrow-left"></i> Back to users
+  <% end %>
+  <%= button_to user_path(@user), method: :delete, class: "btn btn-error", data: { turbo_confirm: "Are you sure you want to destroy this user?" } do %>
+    <i class="fas fa-trash"></i> Destroy this user
+  <% end %>
+</div>

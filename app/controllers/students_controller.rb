@@ -1,4 +1,5 @@
 class StudentsController < ApplicationController
+  before_action :require_teacher
   before_action :set_student, only: %i[ show edit update destroy ]
   before_action :set_student, only: [ :show, :edit, :update, :destroy ]
   attr_reader :student # helps with testing

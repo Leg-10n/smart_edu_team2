@@ -1,25 +1,47 @@
-<% content_for :title, "Manage Users" %>
-<div class="flex flex-col items-center">
-  <h1 class="text-3xl font-bold mb-4">Manage Users</h1>
-
-  <table class="table-auto w-full max-w-4xl mb-4">
+<%= render "shared/notice" %>
+<% content_for :title, "Users" %>
+<div class="flex justify-end px-2">
+  <%= link_to "New user", new_user_path, class: "btn btn-primary" %>
+</div>
+<div class="flex justify-center items-center">
+  <%== pagy_nav(@pagy) %>
+</div>
+<div class="overflow-x-auto m-2">
+  <table class="table table-zebra ">
+    <!-- head -->
     <thead>
-      <tr class="bg-gray-100">
-        <th class="px-4 py-2">Email</th>
-        <th class="px-4 py-2">Role</th>
-        <th class="px-4 py-2">Actions</th>
+      <tr>
+        <th></th>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>UUID</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <% @users.each do |user| %>
-        <tr class="border-b">
-          <td class="px-4 py-2"><%= user.email_address %></td>
-          <td class="px-4 py-2"><%= user.role %></td>
-          <td class="px-4 py-2">
-            <%= link_to 'Edit Role', edit_user_path(user), class: "text-blue-500 hover:text-blue-700" %>
+        <tr>
+          <td></td>
+          <td><%= user.id%></td>
+          <td><%= user.email_address%></td>
+          <td><%= user.role%></td>
+          <td><%= user.uuid%></td>
+          <td>
+            <div class="flex space-x-2">
+              <%= link_to user, class: "hover:text-blue-500 text-blue-700" do %>
+                <i class="fas fa-eye" title="Show"></i> View
+              <% end %>
+              <%= link_to edit_user_path(user), class: "hover:text-yellow-500 text-yellow-700" do %>
+                <i class="fas fa-edit" title="Edit"></i> Edit
+              <% end %>
+            </div>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+</div>
+<div class="flex justify-center items-center">
+  <%== pagy_nav(@pagy) %>
 </div>

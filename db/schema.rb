@@ -69,6 +69,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_19_071305) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
     t.string "role", default: "unassigned"
     t.string "first_name"
     t.string "last_name"
@@ -76,6 +77,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_19_071305) do
     t.string "omise_customer_id"
     t.string "subscription_status", default: "free"
     t.datetime "subscription_end_date"
+    t.string "uuid", null: false
+    t.index ["discarded_at"], name: "index_users_on_discarded_at"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end

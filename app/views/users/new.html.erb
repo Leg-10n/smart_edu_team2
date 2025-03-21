@@ -1,0 +1,10 @@
+<% content_for :title, "New User" %>
+<div class="flex items-center justify-center min-h-[calc(100vh-64px)]">
+  <div class="p-4 bg-neutral-100 min-w-[32rem]">
+    <h1 class="text-3xl font-bold mb-4">New user</h1>
+    <%= render "form", user: @user, action_name: "Create" %>
+    <div class="mt-4">
+      <%= link_to "Back to users", users_path, class: "link-primary" %>
+    </div>
+  </div>
+</div>

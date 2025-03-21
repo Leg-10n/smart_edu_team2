@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                    :integer          not null, primary key
+#  discarded_at    :datetime
 #  email_address         :string           not null
 #  first_name            :string
 #  last_name             :string
@@ -10,13 +11,14 @@
 #  role                  :string           default("unassigned")
 #  subscription_end_date :datetime
 #  subscription_status   :string           default("free")
-#  uuid                  :string
+#  uuid                  :string           not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  omise_customer_id     :string
 #
 # Indexes
 #
+#  index_users_on_discarded_at   (discarded_at)
 #  index_users_on_email_address  (email_address) UNIQUE
 #  index_users_on_uuid           (uuid) UNIQUE
 #
@@ -53,5 +55,10 @@ class UserTest < ActiveSupport::TestCase
     assert user.save
     user = User.new email_address: "a222@bbb.com", password: "password"
     assert_not user.save
+  end
+
+  test "should not have empty uuid on create" do
+    user = User.new email_address: "anewuser@abc.com", password: "5555555555", uuid: SecureRandom.uuid
+    assert user.uuid.present?
   end
 end

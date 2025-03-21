@@ -21,8 +21,8 @@ module SmartEdu
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    config.time_zone = 'Asia/Bangkok'  # Set the time zone to Bangkok
-    config.active_record.default_timezone = :local  # Store time in UTC in the database  
+    config.time_zone = "Asia/Bangkok"  # Set the time zone to Bangkok
+    config.active_record.default_timezone = :local  # Store time in UTC in the database
     # config.eager_load_paths << Rails.root.join("extras")
     config.active_job.queue_adapter = :solid_queue
   end

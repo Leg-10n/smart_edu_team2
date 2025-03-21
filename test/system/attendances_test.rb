@@ -3,7 +3,7 @@ require "application_system_test_case"
 class AttendancesTest < ApplicationSystemTestCase
   setup do
     @attendance = attendances(:attendance_1)
-    login
+    login(:teacherA)
   end
 
   test "visiting the index" do

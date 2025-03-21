@@ -5,6 +5,7 @@
 # Table name: users
 #
 #  id                    :integer          not null, primary key
+#  discarded_at    :datetime
 #  email_address         :string           not null
 #  first_name            :string
 #  last_name             :string
@@ -12,25 +13,67 @@
 #  role                  :string           default("unassigned")
 #  subscription_end_date :datetime
 #  subscription_status   :string           default("free")
-#  uuid                  :string
+#  uuid                  :string           not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  omise_customer_id     :string
 #
 # Indexes
 #
+#  index_users_on_discarded_at   (discarded_at)
 #  index_users_on_email_address  (email_address) UNIQUE
 #  index_users_on_uuid           (uuid) UNIQUE
 #
 one:
   email_address: one@example.com
   password_digest: <%= password_digest %>
+  role: unassigned
+  uuid: <%= SecureRandom.uuid %>
 
 two:
   email_address: two@example.com
   password_digest: <%= password_digest %>
+  role: unassigned
+  uuid: <%= SecureRandom.uuid %>
 
 three:
   email_address: a@a.com
   password_digest: <%= password_digest %>
+  role: unassigned
+  uuid: <%= SecureRandom.uuid %>
 
+adminA:
+  email_address: admina1@test.com
+  password_digest: <%= password_digest %>
+  role: admin
+  uuid: <%= SecureRandom.uuid %>
+
+adminB:
+  email_address: adminb1@test.com
+  password_digest: <%= password_digest %>
+  role: admin
+  uuid: <%= SecureRandom.uuid %>
+
+teacherA:
+  email_address: teachera1@test.com
+  password_digest: <%= password_digest %>
+  role: teacher
+  uuid: <%= SecureRandom.uuid %>
+
+teacherB:
+  email_address: teacherb1@test.com
+  password_digest: <%= password_digest %>
+  role: admin
+  uuid: <%= SecureRandom.uuid %>
+
+studentA:
+  email_address: studenta1@test.com
+  password_digest: <%= password_digest %>
+  role: student
+  uuid: <%= SecureRandom.uuid %>
+
+studentB:
+  email_address: studentb1@test.com
+  password_digest: <%= password_digest %>
+  role: student
+  uuid: <%= SecureRandom.uuid %>
