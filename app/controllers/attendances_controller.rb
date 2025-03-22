@@ -13,9 +13,9 @@ class AttendancesController < ApplicationController
 
   # GET /attendances/new
   def new
-    @q = Student.ransack(params[:q])
-    @students = @q.result(distinct: true)
-    @attendances = Attendance.order(timestamp: :desc).limit(20).includes(:student)
+    @q = User.ransack(params[:q])
+    @users = @q.result(distinct: true)
+    @attendances = Attendance.order(timestamp: :desc).limit(20).includes(:user)
     respond_to do |format|
       format.html # For normal page loads
       format.turbo_stream # For Turbo-powered live updates
@@ -31,12 +31,11 @@ class AttendancesController < ApplicationController
     timezone = cookies[:timezone] || "UTC"
 
     Time.use_zone(timezone) do
-      p = params.permit(:student_id).merge(
-        user_id: Current.user&.id,  # Prevent nil user error
-        timestamp: Time.current
-      )
+      permitted_params = params.permit(:user_id)  # Permit only user_id
+      permitted_params[:timestamp] = Time.current
 
-      @attendance = Attendance.new(p)
+      Rails.logger.debug "Permitted Params: #{permitted_params.inspect}"
+      @attendance = Attendance.new(permitted_params)
 
       if @attendance.save
         respond_to do |format|
@@ -44,6 +43,7 @@ class AttendancesController < ApplicationController
           format.json { render json: { message: "Attendance successfully recorded." }, status: :created }
         end
       else
+        Rails.logger.debug "Errors: #{@attendance.errors.full_messages}"
         respond_to do |format|
           format.html { redirect_to new_attendance_path(request.parameters), alert: "Failed to save attendance." }
           format.json { render json: { error: @attendance.errors.full_messages.to_sentence }, status: :unprocessable_entity }
@@ -55,7 +55,7 @@ class AttendancesController < ApplicationController
   # PATCH/PUT /attendances/1 or /attendances/1.json
   def update
     respond_to do |format|
-      if @attendance.update(attendance_params)
+      if @attendance.update(params.permit(:user_id, :timestamp))
         format.html { redirect_to @attendance, notice: "Attendance was successfully updated." }
         format.json { render :show, status: :ok, location: @attendance }
       else
@@ -79,10 +79,5 @@ class AttendancesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_attendance
       @attendance = Attendance.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def attendance_params
-      params.require(:attendance).permit(:student_id, :timestamp, :user_id)
     end
 end

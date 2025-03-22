@@ -45,4 +45,8 @@ class User < ApplicationRecord
   def password_required?
     new_record? || password.present?
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id first_name last_name email created_at updated_at]
+  end
 end

@@ -6,7 +6,7 @@
 #  timestamp  :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  student_id :integer          not null
+#  student_id :integer
 #  user_id    :integer          not null
 #
 # Indexes
@@ -20,6 +20,5 @@
 #  user_id     (user_id => users.id)
 #
 class Attendance < ApplicationRecord
-  belongs_to :student
   belongs_to :user
 end

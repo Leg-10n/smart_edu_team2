@@ -3,8 +3,8 @@ require "test_helper"
 class AttendancesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @attendance = attendances(:attendance_1)
-    @user = users(:some_user) # Update with a valid fixture
-    sign_in @user if defined?(sign_in) # Devise helper
+    @user = users(:one) # Update with a valid fixture
+    sign_in # Devise helper
   end
 
   test "should get index" do
@@ -19,7 +19,8 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create attendance" do
     assert_difference("Attendance.count", 1) do
-      post attendances_url, params: { user_id: @user.id }, as: :json
+      post attendances_url, params: { user_id: users(:one).id }, as: :json
+      puts @response.body
     end
     assert_response :created
     assert_match /Attendance successfully recorded/, @response.body

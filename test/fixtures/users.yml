@@ -20,15 +20,10 @@
 #  index_users_on_email_address  (email_address) UNIQUE
 #  index_users_on_uuid           (uuid) UNIQUE
 #
-<% require 'bcrypt' %>
-one:
-  email_address: one@example.com
-  password_digest: <%= BCrypt::Password.create("password") %>
-
-two:
-  email_address: two@example.com
-  password_digest: <%= BCrypt::Password.create("password") %>
-
-three:
-  email_address: a@a.com
-  password_digest: <%= BCrypt::Password.create("password") %>
+<% for i in 1..100 do %>
+user_<%=i%>:
+  email_address: "test@gmail.com"
+  password: <%= password_digest %>
+  role: "student"
+  user_id: UID_<%=i%>
+<% end %>
