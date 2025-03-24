@@ -1,0 +1,46 @@
+name: Deploy
+
+concurrency: production-deployment
+
+on:
+  # pull_request:
+  # push:
+  # trigger run when [CI] action is [completed] (check if success later on jobs) on [main]
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    # runs if CI tests passes
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+            
+    - name: Setup secrets keys
+      run: |
+        echo "${{ secrets.MASTER_KEY }}" > config/master.key
+        mkdir secret
+        echo "${{ secrets.DOCKER_REGISTRY_PASSWORD }}" > secret/kamal_reg_pass.key
+                
+    - name: Setup SSH keys
+      uses: webfactory/ssh-agent@v0.9.0
+      with: 
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        log-public-key: false
+    
+    - name: Install ruby
+      uses: ruby/setup-ruby@v1
+      with: 
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      
+    # this part is already in Gemfile, so bundle install and cache them
+    # - name: Install kamal
+    #   run: gem install kamal
+
+    - name: Deploy with kamal
+      run: bundle exec kamal deploy
+      
