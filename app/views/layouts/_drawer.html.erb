@@ -58,7 +58,7 @@
 
       <% if authenticated? %>
         <li>
-          <%= link_to session_path, method: :delete, data: { turbo_confirm: "Are you sure you want to log out?" } do %>
+          <%= link_to session_path, method: :delete do %>
             <i class="fas fa-sign-out-alt"></i> Logout
           <% end %>
         </li>
