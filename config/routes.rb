@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :attendances
   resources :students
   get "home/index"
-  resource :session
+  resource :session, only: [ :new, :create, :destroy ]
   resources :passwords, param: :token
   resources :signup, only: %i[new create]
   resources :students

@@ -3,6 +3,7 @@
   <div class="drawer-content">
     <%= yield %>
   </div>
+  
   <div class="drawer-side">
     <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
     <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
@@ -57,18 +58,17 @@
 
       <% if authenticated? %>
         <li>
-          <%= link_to new_session_path do %>
-            <i class="fas fa-sign-in-alt"></i> Login
+          <%= link_to session_path, method: :delete, data: { turbo_confirm: "Are you sure you want to log out?" } do %>
+            <i class="fas fa-sign-out-alt"></i> Logout
           <% end %>
         </li>
       <% else %>
         <li>
-          <%= link_to session_path, data: {turbo_method: :delete} do %>
-            <i class="fas fa-sign-out-alt"></i> Logout
+          <%= link_to new_session_path do %>
+            <i class="fas fa-sign-in-alt"></i> Login
           <% end %>
         </li>
       <% end %>
     </ul>
   </div>
 </div>
-
