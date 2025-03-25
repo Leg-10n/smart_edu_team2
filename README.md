@@ -1,5 +1,9 @@
 # README
 
+![CI](https://github.com/cs-muic/smart_edu_team2-deployment-test/actions/workflows/ci.yml/badge.svg)
+
+![Deploy](https://github.com/cs-muic/smart_edu_team2-deployment-test/actions/workflows/deploy.yml/badge.svg)
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
