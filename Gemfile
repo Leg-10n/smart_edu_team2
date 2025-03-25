@@ -81,4 +81,4 @@ gem "jquery-rails"
 
 gem "omise"
 
-gem 'rufus-scheduler'
+gem "rufus-scheduler"

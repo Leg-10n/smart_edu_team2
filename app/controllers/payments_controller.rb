@@ -2,8 +2,8 @@
 class PaymentsController < ApplicationController
   include Authentication
 
-  before_action :require_authentication, except: [:success, :failure, :webhook]
-  skip_before_action :verify_authenticity_token, only: [:webhook]
+  before_action :require_authentication, except: [ :success, :failure, :webhook ]
+  skip_before_action :verify_authenticity_token, only: [ :webhook ]
 
   def new
     # Redirect if already subscribed
