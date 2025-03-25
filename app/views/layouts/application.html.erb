@@ -1,46 +1,66 @@
 <!DOCTYPE html>
 <html lang="html" data-theme="pastel">
-  <head>
-    <title><%= content_for(:title) || "Schooler" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= yield :head %>
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  </head>
-  <body>
-    <%= render "shared/notif" %>
+<head>
+  <title><%= content_for(:title) || "Schooler" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= yield :head %>
+  <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+  <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+  <link rel="icon" href="/icon.png" type="image/png">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.png">
+  <%# Includes all stylesheet files in app/assets/stylesheets %>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<%= render "shared/notif" %>
     <% if authenticated? %>
-      <%= render "layouts/nav"%>
-      <%= render "layouts/drawer" do %>
-        <%= yield %>
+  <div class="flex items-center justify-between bg-base-100 p-2 shadow-sm">
+    <div class="flex items-center">
+      <% if Current.user.subscribed? %>
+        <% if Current.user.active_subscription&.status == 'active' %>
+          <a href="<%= subscriptions_path %>" class="flex items-center text-sm font-medium mr-4">
+            <span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+            Premium
+          </a>
+        <% elsif Current.user.active_subscription&.status == 'grace' %>
+          <a href="<%= subscriptions_path %>" class="flex items-center text-sm font-medium mr-4">
+            <span class="inline-block w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+            Grace Period
+          </a>
+        <% end %>
+      <% else %>
+        <%= link_to new_payment_path, class: "btn btn-primary btn-sm mr-4" do %>
+          Upgrade to Premium
+        <% end %>
       <% end %>
-    <% else%>
-      <%= yield %>
-    <% end %>
-    <!-- filepath: /c:/Users/Kevin/Desktop/SoftEn/smart_edu_team2/app/views/layouts/application.html.erb -->
-    <script>
+    </div>
+  </div>
+
+  <%= render "layouts/nav"%>
+  <%= render "layouts/drawer" do %>
+    <%= yield %>
+  <% end %>
+<% else%>
+  <%= yield %>
+<% end %>
+<!-- filepath: /c:/Users/Kevin/Desktop/SoftEn/smart_edu_team2/app/views/layouts/application.html.erb -->
+<script>
     document.addEventListener("DOMContentLoaded", function() {
-      var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      if (!document.cookie.includes("timezone")) {
-        document.cookie = "timezone=" + timezone + "; path=/";
-        location.reload(); // Reload to apply timezone in Rails
-      }
+        var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (!document.cookie.includes("timezone")) {
+            document.cookie = "timezone=" + timezone + "; path=/";
+            location.reload(); // Reload to apply timezone in Rails
+        }
     });
-  </script>
-  
+</script>
+
 </body>
-  </html>
+</html>

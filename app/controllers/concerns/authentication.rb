@@ -19,6 +19,7 @@ module Authentication
 
     def require_authentication
       resume_session || request_authentication
+      redirect_to new_session_path, alert: "Please sign in to continue" unless authenticated?
     end
 
     def resume_session

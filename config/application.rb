@@ -24,5 +24,6 @@ module SmartEdu
     config.time_zone = "Asia/Bangkok"  # Set the time zone to Bangkok
     config.active_record.default_timezone = :local  # Store time in UTC in the database
     # config.eager_load_paths << Rails.root.join("extras")
+    config.active_job.queue_adapter = :solid_queue
   end
 end
