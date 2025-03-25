@@ -58,7 +58,7 @@
 
       <% if authenticated? %>
         <li>
-          <%= link_to session_path, method: :delete do %>
+          <%= link_to new_session_path, method: :delete do %>
             <i class="fas fa-sign-out-alt"></i> Logout
           <% end %>
         </li>
