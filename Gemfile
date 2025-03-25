@@ -80,3 +80,5 @@ gem "pry-byebug", "~> 3.10"
 gem "jquery-rails"
 
 gem "omise"
+
+gem 'rufus-scheduler'

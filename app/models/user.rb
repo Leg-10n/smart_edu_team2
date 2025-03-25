@@ -3,7 +3,6 @@
 # Table name: users
 #
 #  id                    :integer          not null, primary key
-#  discarded_at    :datetime
 #  email_address         :string           not null
 #  first_name            :string
 #  last_name             :string
@@ -18,7 +17,6 @@
 #
 # Indexes
 #
-#  index_users_on_discarded_at   (discarded_at)
 #  index_users_on_email_address  (email_address) UNIQUE
 #  index_users_on_uuid           (uuid) UNIQUE
 #
@@ -43,14 +41,14 @@ class User < ApplicationRecord
   end
 
   def subscribed?
-    subscriptions.where(status: "active").any?
+    subscription_status == "active" &&
+      (subscription_end_date.nil? || subscription_end_date > Time.current)
   end
 
   def active_subscription
     subscriptions.where(status: "active").order(created_at: :desc).first
   end
 
-  # Create or retrieve Omise customer
   def omise_customer
     if omise_customer_id.present?
       Omise::Customer.retrieve(omise_customer_id)
@@ -75,5 +73,15 @@ class User < ApplicationRecord
 
   def password_required?
     new_record? || password.present?
+  end
+
+  def in_grace_period?
+    subscription_status == "grace" &&
+      subscription_end_date && subscription_end_date > Time.current
+  end
+
+  def subscription_days_remaining
+    return 0 unless subscription_end_date && subscription_end_date > Time.current
+    ((subscription_end_date - Time.current) / 1.day).ceil
   end
 end
