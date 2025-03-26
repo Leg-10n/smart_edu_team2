@@ -3,7 +3,7 @@ require "application_system_test_case"
 class StudentsTest < ApplicationSystemTestCase
   def login
     visit new_session_url
-    @user = users(:one)
+    @user = users(:teacherA)
     fill_in "email_address", with: @user.email_address
     fill_in "password", with: "password"
     click_on "Sign in"

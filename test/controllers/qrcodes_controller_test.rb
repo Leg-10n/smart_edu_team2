@@ -1,21 +1,25 @@
 require "test_helper"
 
 class QrcodesControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @user = users(:one)
+  # test "the truth" do
+  #   assert true
+  # end
+
+  test "should not be able to show qr by non-students" do
+    [ :teacherA, :adminA, :one ].each do |user|
+      sign_in(user)
+      get qrcodes_url
+      assert_redirected_to root_path
+      assert_equal "You must have role [ student ] to access the requested page.", flash[:alert]
+    end
   end
 
-  test "should redirect guest users from show" do
-    get qrcode_url
-    assert_redirected_to new_session_path
-    follow_redirect!
-    assert_match /Please log in to view your QR code/, response.body
-  end
-
-  test "should show QR code for logged-in user" do
-    sign_in @user
-    get qrcode_url
-    assert_response :success
-    assert_match /<svg/, response.body
+  test "should not be able to access qr scanner by non-teacher" do
+    [ :studentA, :adminA, :one ].each do |user|
+      sign_in(user)
+      get scan_qr_url
+      assert_redirected_to root_path
+      assert_equal "You must have role [ teacher ] to access the requested page.", flash[:alert]
+    end
   end
 end

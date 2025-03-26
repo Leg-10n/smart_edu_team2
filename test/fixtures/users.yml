@@ -5,25 +5,73 @@
 # Table name: users
 #
 #  id              :integer          not null, primary key
+#  discarded_at    :datetime
 #  email_address   :string           not null
 #  first_name      :string
 #  is_active       :boolean          default(TRUE)
 #  last_name       :string
 #  password_digest :string           not null
 #  role            :string           default("unassigned")
-#  uuid            :string
+#  uuid            :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
 # Indexes
 #
+#  index_users_on_discarded_at   (discarded_at)
 #  index_users_on_email_address  (email_address) UNIQUE
 #  index_users_on_uuid           (uuid) UNIQUE
 #
-<% for i in 1..100 do %>
-user_<%=i%>:
-  email_address: "test@gmail.com"
-  password: <%= password_digest %>
-  role: "student"
-  user_id: UID_<%=i%>
-<% end %>
+one:
+  email_address: one@example.com
+  password_digest: <%= password_digest %>
+  role: unassigned
+  uuid: <%= SecureRandom.uuid %>
+
+two:
+  email_address: two@example.com
+  password_digest: <%= password_digest %>
+  role: unassigned
+  uuid: <%= SecureRandom.uuid %>
+
+three:
+  email_address: a@a.com
+  password_digest: <%= password_digest %>
+  role: unassigned
+  uuid: <%= SecureRandom.uuid %>
+
+adminA:
+  email_address: admina1@test.com
+  password_digest: <%= password_digest %>
+  role: admin
+  uuid: <%= SecureRandom.uuid %>
+
+adminB:
+  email_address: adminb1@test.com
+  password_digest: <%= password_digest %>
+  role: admin
+  uuid: <%= SecureRandom.uuid %>
+
+teacherA:
+  email_address: teachera1@test.com
+  password_digest: <%= password_digest %>
+  role: teacher
+  uuid: <%= SecureRandom.uuid %>
+
+teacherB:
+  email_address: teacherb1@test.com
+  password_digest: <%= password_digest %>
+  role: admin
+  uuid: <%= SecureRandom.uuid %>
+
+studentA:
+  email_address: studenta1@test.com
+  password_digest: <%= password_digest %>
+  role: student
+  uuid: <%= SecureRandom.uuid %>
+
+studentB:
+  email_address: studentb1@test.com
+  password_digest: <%= password_digest %>
+  role: student
+  uuid: <%= SecureRandom.uuid %>

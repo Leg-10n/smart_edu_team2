@@ -7,30 +7,68 @@
     <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
     <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
       <!-- Sidebar content here -->
-      <li><%= link_to root_path do %>
+      <li>
+        <%= link_to root_path do %>
           <i class="fas fa-tachometer-alt"></i> Dashboard
-        <% end %></li>
-      <li><%= link_to students_path do %>
-          <i class="fas fa-user-graduate"></i> Manage Student
-        <% end %></li>
-      <li><%= link_to new_attendance_path do %>
-          <i class="fa-solid fa-user-plus"></i> Add Attendance
-        <% end %></li>
-      <li><%= link_to attendances_path do %>
-          <i class="fas fa-list"></i> List Attendances
-        <% end %></li>
-        <li><%= link_to users_path do %>
-          <i class="fa-solid fa-users"></i> Users (only for admin)
-        <% end %></li>        
-        <li><%= link_to "/qrcodes/" do %>
-          <i class="fas fa-qrcode"></i> My QR code
-        <% end %></li>
-        <li><%= link_to "/scan_qr" do %>
-          <i class="fa-solid fa-magnifying-glass"></i> QR Scan (only for teacher)
-        <% end %></li>
-      <li><%= link_to session_path, data: {turbo_method: :delete} do %>
-          <i class="fas fa-sign-out-alt"></i> Logout
-        <% end %></li>
+        <% end %>
+      </li>
+
+      <% if teacher? %>
+        <li>
+          <%= link_to students_path do %>
+            <i class="fas fa-user-graduate"></i> Manage Student
+          <% end %>
+        </li>
+        <li>
+          <%= link_to new_attendance_path do %>
+            <i class="fa-solid fa-user-plus"></i> Add Attendance
+          <% end %>
+        </li>
+        <li>
+          <%= link_to attendances_path do %>
+            <i class="fas fa-list"></i> List Attendances
+          <% end %>
+        </li>
+      <% end %>
+
+      <% if admin? %>
+        <li>
+          <%= link_to users_path do %>
+            <i class="fa-solid fa-users"></i> Users
+          <% end %>
+        </li>        
+      <% end %>
+
+      <% if student? %>
+        <li>
+          <%= link_to "/qrcodes/" do %>
+            <i class="fas fa-qrcode"></i> My QR code
+          <% end %>
+        </li>
+      <% end %>
+
+      <% if teacher? %>
+        <li>
+          <%= link_to "/scan_qr" do %>
+            <i class="fa-solid fa-magnifying-glass"></i> QR Scan
+          <% end %>
+        </li>
+      <% end %>
+
+      <% if authenticated? %>
+        <li>
+          <%= link_to new_session_path do %>
+            <i class="fas fa-sign-in-alt"></i> Login
+          <% end %>
+        </li>
+      <% else %>
+        <li>
+          <%= link_to session_path, data: {turbo_method: :delete} do %>
+            <i class="fas fa-sign-out-alt"></i> Logout
+          <% end %>
+        </li>
+      <% end %>
     </ul>
   </div>
 </div>
+

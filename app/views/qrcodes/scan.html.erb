@@ -49,6 +49,11 @@ function stopScanner() {
 // Function to send scanned data for attendance
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 function markAttendance(scannedData) {
+    console.log("Scanned user ID (before sending):", scannedData); // Debug log
+
+    const requestBody = JSON.stringify({ user_id: scannedData });
+    console.log("Sending to backend:", requestBody); // Log exact request
+
     fetch("/attendances", {
         method: "POST",
         headers: {
@@ -56,7 +61,7 @@ function markAttendance(scannedData) {
             "Accept": "application/json",
             "X-CSRF-Token": csrfToken
         },
-        body: JSON.stringify({ student_id: scannedData })  // Fix variable name
+        body: requestBody
     })
     .then(response => {
         if (!response.ok) {
@@ -67,6 +72,8 @@ function markAttendance(scannedData) {
     .then(data => console.log("Success:", data))
     .catch(error => console.error("Error:", error));
 }
+
+
 
 // Attach to buttons
 document.getElementById("start-btn").addEventListener("click", startScanner);

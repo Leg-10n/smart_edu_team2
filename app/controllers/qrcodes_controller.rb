@@ -1,11 +1,16 @@
 # app/controllers/qrcodes_controller.rb
 class QrcodesController < ApplicationController
   def show
+    require_student
     if current_user
       @qr_code = generate_qr_code(current_user.id)  # Generate QR code for the current user's ID
     else
       redirect_to new_session_path, alert: "Please log in to view your QR code."
     end
+  end
+
+  def scan
+    require_teacher
   end
 
   private
@@ -19,8 +24,5 @@ class QrcodesController < ApplicationController
       module_size: 6,
       standalone: true
     )
-  end
-
-  def scan
   end
 end

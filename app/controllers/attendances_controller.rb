@@ -1,4 +1,5 @@
 class AttendancesController < ApplicationController
+  before_action :require_teacher
   before_action :set_attendance, only: %i[show edit update destroy]
   include Pagy::Backend
 

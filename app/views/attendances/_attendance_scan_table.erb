@@ -35,7 +35,7 @@
         <% @attendances.each do |attendance| %>
           <tr class="hover">
             <td><%= attendance.student.name %></td>
-            <td class="timestamp" data-timestamp="<%= attendance.timestamp.iso8601 %>"><%= attendance.timestamp.strftime('%Y-%m-%d %H:%M') %></td>
+            <td class="timestamp" data-timestamp="<%= attendance.timestamp.iso8601 %>"><%= attendance.timestamp.strftime('%Y-%m-%d') %></td>
           </tr>
         <% end %>
       </tbody>
