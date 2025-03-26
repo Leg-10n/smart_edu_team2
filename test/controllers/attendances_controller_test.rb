@@ -18,7 +18,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create attendance" do
     assert_difference("Attendance.count", 1) do
-      post attendances_url, params: { user_id: users(:one).id }, as: :json
+      post attendances_url, params: { user_id: users(:studentA).id }, as: :json
       puts @response.body
     end
     assert_response :created
@@ -28,6 +28,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
   test "should not create attendance with invalid params" do
     assert_no_difference("Attendance.count") do
       post attendances_url, params: { user_id: nil }, as: :json
+      puts @response.body
     end
     assert_response :unprocessable_entity
     assert_match /User must exist/, @response.body
@@ -44,7 +45,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update attendance" do
-    patch attendance_url(@attendance), params: { attendance: { user_id: @user.id } }
+    patch attendance_url(@attendance), params: { attendance: { user_id: users(:studentA).id } }
     assert_redirected_to attendance_url(@attendance)
     follow_redirect!
     assert_match /Attendance was successfully updated/, response.body

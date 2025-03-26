@@ -56,10 +56,11 @@ class AttendancesController < ApplicationController
   # PATCH/PUT /attendances/1 or /attendances/1.json
   def update
     respond_to do |format|
-      if @attendance.update(params.permit(:user_id, :timestamp))
+      if @attendance.update(attendance_params)
         format.html { redirect_to @attendance, notice: "Attendance was successfully updated." }
         format.json { render :show, status: :ok, location: @attendance }
       else
+        Rails.logger.debug "Update failed: #{@attendance.errors.full_messages}"
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @attendance.errors, status: :unprocessable_entity }
       end
@@ -80,5 +81,9 @@ class AttendancesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_attendance
       @attendance = Attendance.find(params[:id])
+    end
+
+    def attendance_params
+      params.require(:attendance).permit(:user_id, :timestamp)
     end
 end

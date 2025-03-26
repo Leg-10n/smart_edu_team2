@@ -5,12 +5,12 @@
     <%= notice %>
   </div>
 <% end %>
-<%= search_form_for @q, url: new_attendance_path, data: { controller: "submit", turbo_frame: "students" } do |f| %>
+<%= search_form_for @q, url: new_attendance_path, data: { controller: "submit", turbo_frame: "users" } do |f| %>
   <div class="p-5 bg-neutral-400 flex justify-center">
-    <%= f.text_field :name_cont, placeholder: "Search by student name...", data: { action: "input->submit#submit" }, 
+    <%= f.text_field :full_name_cont, placeholder: "Search by user name...", data: { action: "input->submit#submit" }, 
         class: "input input-bordered w-full max-w-xs" %>
   </div>
-  <turbo_frame id="students">
+  <turbo_frame id="users">
     <%= render "attendances/attendance_scan_table" %>
   </turbo_frame>
 <% end %>
