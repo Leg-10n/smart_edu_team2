@@ -14,14 +14,14 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "not logged in should get redirected when trying to access dashboard" do
-    get dashboard_path # or whatever route maps to the dashboard action
+    get dashboard_path
     assert_redirected_to new_session_path
   end
 
   test "should get dashboard access by all roles" do
     [ :studentA, :adminA, :one, :studentA ].each do |user|
       sign_in(user)
-      get dashboard_path # or whatever route maps to the dashboard action
+      get dashboard_path
       assert_response :success
       assert_includes @response.body, "<title>Dashboard</title>"
       assert_includes @response.body, "Total Students"
