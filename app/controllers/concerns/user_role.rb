@@ -8,7 +8,6 @@ module UserRole
       ROLES = %w[admin teacher student unassigned].freeze
     end
   end
-  private
 
   def require_teacher
     unless teacher?
