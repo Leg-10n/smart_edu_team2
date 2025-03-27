@@ -12,14 +12,14 @@ module UserRole
   private
 
   def require_teacher
-    redirect_to root_path, alert: "Only teachers can do that." unless teacher?
+    redirect_to root_path, alert: "You must have role [ teacher ] to access the requested page." unless teacher?
   end
 
   def require_admin
-    redirect_to root_path, alert: "Only admins can do that." unless admin?
+    redirect_to root_path, alert: "You must have role [ admin ] to access the requested page." unless admin?
   end
 
   def require_student
-    redirect_to root_path, alert: "Only students can do that." unless student?
+    redirect_to root_path, alert: "You must have role [ student ] to access the requested page." unless student?
   end
 end
