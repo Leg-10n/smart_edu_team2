@@ -3,14 +3,9 @@
 class ApplicationController < ActionController::Base
   include Authentication
   include UserRole
-  # ^ This is your authentication concern that sets up current_user and require_authentication
+  helper_method :current_user
 
-  # ----------------------------------------------------------------
   # ROLE-CHECK METHODS
-  # ----------------------------------------------------------------
-  # Because your layout calls <%= if teacher? %>, we define them here as instance
-  # methods. We also declare them as helper_method, so they are callable in views.
-
   def teacher?
     current_user&.role == "teacher"
   end
@@ -31,7 +26,6 @@ class ApplicationController < ActionController::Base
     current_user&.role == "unassigned"
   end
 
-  # Make them available to the views:
   helper_method :teacher?, :admin?, :student?, :owner?, :unassigned?
 
   protect_from_forgery with: :exception

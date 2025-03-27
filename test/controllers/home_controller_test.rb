@@ -4,7 +4,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   test "should get index when logged in" do
     sign_in(:adminA)
     get root_path
-    assert_equal status, 200
+    assert_response :success
     assert_includes @response.body, "Total Students"
   end
 
@@ -17,15 +17,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     [ :studentA, :adminA, :one, :studentA ].each do |user|
       sign_in(user)
       get root_path
-      assert_equal 200, status
+      assert_response :success
       assert_includes @response.body, "<title>Dashboard</title>"
     end
   end
-
-  # private
-
-  # def sign_in
-  #   user = users(:one)
-  #   post session_url, params: { email_address: user.email_address, password: "password" }
-  # end
 end

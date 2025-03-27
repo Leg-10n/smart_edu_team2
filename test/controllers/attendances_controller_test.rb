@@ -16,9 +16,12 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # UPDATED: Nest student_id under attendance:
   test "should create attendance" do
     assert_difference("Attendance.count") do
-      post attendances_url, params: { student_id: @attendance.student_id }
+      post attendances_url, params: {
+        attendance: { student_id: @attendance.student_id }
+      }
       puts @response.body
     end
   end
@@ -34,7 +37,13 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update attendance" do
-    patch attendance_url(@attendance), params: { attendance: { student_id: @attendance.student_id, timestamp: @attendance.timestamp, user_id: @attendance.user_id } }
+    patch attendance_url(@attendance), params: {
+      attendance: {
+        student_id: @attendance.student_id,
+        timestamp: @attendance.timestamp,
+        user_id: @attendance.user_id
+      }
+    }
     assert_redirected_to attendance_url(@attendance)
   end
 
@@ -42,7 +51,6 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Attendance.count", -1) do
       delete attendance_url(@attendance)
     end
-
     assert_redirected_to attendances_url
   end
 
@@ -70,7 +78,13 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
       teacher = users(:teacherA)
       student = students(:student_1)
       assert_no_difference("Attendance.count") do
-        post attendances_url, params: { attendance: { student_id: student.id, user_id: teacher.id, timestamp: Time.now } }
+        post attendances_url, params: {
+          attendance: {
+            student_id: student.id,
+            user_id: teacher.id,
+            timestamp: Time.now
+          }
+        }
       end
       assert_redirected_to root_path
       assert_equal "You must have role [ teacher ] to access the requested page.", flash[:alert]
@@ -92,7 +106,9 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
       updating_attendance = attendances(:attendance_5)
       original_timestamp = updating_attendance.timestamp
       assert_no_changes(-> { updating_attendance.reload; updating_attendance.timestamp }) do
-        patch attendance_url(updating_attendance), params: { attendance: { timestamp: Time.now } }
+        patch attendance_url(updating_attendance), params: {
+          attendance: { timestamp: Time.now }
+        }
       end
       updating_attendance.reload
       assert_equal original_timestamp, updating_attendance.timestamp
