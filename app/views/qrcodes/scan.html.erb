@@ -51,7 +51,7 @@ const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute
 function markAttendance(scannedData) {
     console.log("Scanned user ID (before sending):", scannedData); // Debug log
 
-    const requestBody = JSON.stringify({ user_id: scannedData });
+    const requestBody = JSON.stringify({ uid: scannedData });
     console.log("Sending to backend:", requestBody); // Log exact request
 
     fetch("/attendances", {
