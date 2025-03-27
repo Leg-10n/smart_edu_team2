@@ -3,10 +3,11 @@ module UserRole
   extend ActiveSupport::Concern
 
   included do
-    # Example: enforce a recognized list of roles if needed
-    ROLES = %w[admin teacher student unassigned].freeze
+    # Define the constant only if it's not already defined
+    unless defined?(ROLES)
+      ROLES = %w[admin teacher student unassigned].freeze
+    end
   end
-
   private
 
   def require_teacher
