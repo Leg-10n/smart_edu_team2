@@ -11,9 +11,9 @@
       <tbody>
         <% @students.each do |student| %>
           <tr class="hover" data-content="<%= student.name %>">
-            <td><%= highlight(student.name, params.dig(:q, :name_cont)) %></td>
+            <td><%= highlight(student.name, params.dig(:q, :name)) %></td>
             <td><%= submit_tag "Check-in", name: "check_in", 
-              formaction: attendances_path(student_id: student.id),
+              formaction: attendances_path(uid: student.uid),
               formmethod: :post,
               class: "btn btn-primary btn-xs",
               data: {turbo_frame: "students" }%></td>
@@ -35,7 +35,7 @@
         <% @attendances.each do |attendance| %>
           <tr class="hover">
             <td><%= attendance.student.name %></td>
-            <td class="timestamp" data-timestamp="<%= attendance.timestamp.iso8601 %>"><%= attendance.timestamp.strftime('%Y-%m-%d') %></td>
+            <td class="timestamp" data-timestamp="<%= attendance.timestamp.iso8601 %>"><%= attendance.timestamp.strftime('%Y-%m-%d %H:%M') %></td>
           </tr>
         <% end %>
       </tbody>

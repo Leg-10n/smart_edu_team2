@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_20_153123) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_27_161547) do
   create_table "attendances", force: :cascade do |t|
-    t.integer "student_id"
+    t.integer "student_id", null: false
     t.datetime "timestamp"
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["student_id"], name: "index_attendances_on_student_id"
@@ -43,12 +43,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_20_153123) do
     t.boolean "is_active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "discarded_at"
     t.string "role", default: "unassigned"
     t.string "first_name"
     t.string "last_name"
     t.string "uuid", null: false
-    t.index ["discarded_at"], name: "index_users_on_discarded_at"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end

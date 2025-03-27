@@ -3,7 +3,6 @@
 # Table name: users
 #
 #  id              :integer          not null, primary key
-#  discarded_at    :datetime
 #  email_address   :string           not null
 #  first_name      :string
 #  is_active       :boolean          default(TRUE)
@@ -16,7 +15,6 @@
 #
 # Indexes
 #
-#  index_users_on_discarded_at   (discarded_at)
 #  index_users_on_email_address  (email_address) UNIQUE
 #  index_users_on_uuid           (uuid) UNIQUE
 #
@@ -38,6 +36,9 @@ class User < ApplicationRecord
     self.role ||= "unassigned" if new_record?
   end
 
+  def full_name
+    "#{first_name} #{last_name}".strip
+  end
   private
 
   def set_default_uuid
@@ -46,5 +47,20 @@ class User < ApplicationRecord
 
   def password_required?
     new_record? || password.present?
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id first_name last_name email created_at updated_at full_name]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    [ "attendances", "sessions", "roles" ]  # Replace with actual associations you need
+  end
+
+  ransacker :full_name do |parent|
+    Arel::Nodes::NamedFunction.new(
+      "CONCAT_WS",
+      [ Arel::Nodes.build_quoted(" "), parent.table[:first_name], parent.table[:last_name] ]
+    )
   end
 end
