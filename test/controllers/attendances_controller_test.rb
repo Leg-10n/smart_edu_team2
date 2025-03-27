@@ -3,6 +3,7 @@ require "test_helper"
 class AttendancesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @attendance = attendances(:attendance_1)
+    @student = students(:student_1) # Using a student fixture instead of a user
     sign_in(:teacherA)
   end
 
@@ -16,22 +17,20 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create attendance" do
+  test "should create attendance using UID" do
     assert_difference("Attendance.count", 1) do
-      post attendances_url, params: { user_id: users(:studentA).id }, as: :json
-      puts @response.body
+      post attendances_url, params: { uid: @student.uid }, as: :json
     end
     assert_response :created
     assert_match /Attendance successfully recorded/, @response.body
   end
 
-  test "should not create attendance with invalid params" do
+  test "should not create attendance with invalid UID" do
     assert_no_difference("Attendance.count") do
-      post attendances_url, params: { user_id: nil }, as: :json
-      puts @response.body
+      post attendances_url, params: { uid: "INVALID_UID" }, as: :json
     end
     assert_response :unprocessable_entity
-    assert_match /User must exist/, @response.body
+    assert_match /Student not found/, @response.body
   end
 
   test "should show attendance" do
@@ -45,14 +44,14 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update attendance" do
-    patch attendance_url(@attendance), params: { attendance: { user_id: users(:studentA).id } }
+    patch attendance_url(@attendance), params: { attendance: { student_id: @student.id } }
     assert_redirected_to attendance_url(@attendance)
     follow_redirect!
     assert_match /Attendance was successfully updated/, response.body
   end
 
-  test "should not update attendance with invalid params" do
-    patch attendance_url(@attendance), params: { attendance: { user_id: nil } }
+  test "should not update attendance with invalid student" do
+    patch attendance_url(@attendance), params: { attendance: { student_id: nil } }
     assert_response :unprocessable_entity
   end
 
@@ -81,20 +80,19 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "create action should only be accesible by teachers" do
+  test "create action should only be accessible by teachers" do
     [ :adminA, :studentA, :one ].each do |user|
       sign_in(user)
-      teacher = users(:teacherA)
       student = students(:student_1)
       assert_no_difference("Attendance.count") do
-        post attendances_url, params: { attendance: { student_id: student.id, user_id: teacher.id, timestamp: Time.now } }
+        post attendances_url, params: { uid: student.uid }
       end
       assert_redirected_to root_path
       assert_equal "You must have role [ teacher ] to access the requested page.", flash[:alert]
     end
   end
 
-  test "edit action should only be accesible by teachers" do
+  test "edit action should only be accessible by teachers" do
     [ :adminA, :studentA, :one ].each do |user|
       sign_in(user)
       get edit_attendance_url(@attendance)
@@ -103,7 +101,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "update action should only be accesible by teachers" do
+  test "update action should only be accessible by teachers" do
     [ :adminA, :studentA, :one ].each do |user|
       sign_in(user)
       updating_attendance = attendances(:attendance_5)

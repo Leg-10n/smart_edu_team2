@@ -1,5 +1,3 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 # == Schema Information
 #
 # Table name: attendances
@@ -8,89 +6,8 @@
 #  timestamp  :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  student_id :integer
-#  user_id    :integer          not null
-#
-# Indexes
-#
-#  index_attendances_on_student_id  (student_id)
-#  index_attendances_on_user_id     (user_id)
-#
-# Foreign Keys
-#
-#  student_id  (student_id => students.id)
-#  user_id     (user_id => users.id)
-#
-#
-# Table name: attendances
-#
-#  id         :integer          not null, primary key
-#  timestamp  :datetime
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  student_id :integer
-#  user_id    :integer          not null
-#
-# Indexes
-#
-#  index_attendances_on_student_id  (student_id)
-#  index_attendances_on_user_id     (user_id)
-#
-# Foreign Keys
-#
-#  student_id  (student_id => students.id)
-#  user_id     (user_id => users.id)
-#
-#
-# Table name: attendances
-#
-#  id         :integer          not null, primary key
-#  timestamp  :datetime
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  student_id :integer
-#  student_id :integer
-#  user_id    :integer          not null
-#
-# Indexes
-#
-#  index_attendances_on_student_id  (student_id)
-#  index_attendances_on_user_id     (user_id)
-#
-# Foreign Keys
-#
-#  student_id  (student_id => students.id)
-#  user_id     (user_id => users.id)
-#
-#
-# Table name: attendances
-#
-#  id         :integer          not null, primary key
-#  timestamp  :datetime
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  student_id :integer
-#  user_id    :integer          not null
-#
-# Indexes
-#
-#  index_attendances_on_student_id  (student_id)
-#  index_attendances_on_user_id     (user_id)
-#
-# Foreign Keys
-#
-#  student_id  (student_id => students.id)
-#  user_id     (user_id => users.id)
-#
-#
-# Table name: attendances
-#
-#  id         :integer          not null, primary key
-#  timestamp  :datetime
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
 #  student_id :integer          not null
-#  user_id    :integer          not null
+#  user_id    :integer
 #
 # Indexes
 #
@@ -102,49 +19,38 @@
 #  student_id  (student_id => students.id)
 #  user_id     (user_id => users.id)
 #
-
-# test/fixtures/attendances.yml
-
 attendance_1:
-  user: one
+  student: student_1
   timestamp: <%= Time.now - 60 %>
 
 attendance_2:
-  user: two
+  student: student_2
   timestamp: <%= Time.now - 120 %>
 
 attendance_3:
-  user: three
+  student: student_3
   timestamp: <%= Time.now - 180 %>
 
 attendance_4:
-  user: adminA
+  student: student_4
   timestamp: <%= Time.now - 240 %>
 
 attendance_5:
-  user: adminB
+  student: student_5
   timestamp: <%= Time.now - 300 %>
 
 attendance_6:
-  user: teacherA
+  student: student_6
   timestamp: <%= Time.now - 360 %>
 
 attendance_7:
-  user: teacherB
+  student: student_7
   timestamp: <%= Time.now - 420 %>
 
 attendance_8:
-  user: studentA
+  student: student_8
   timestamp: <%= Time.now - 480 %>
 
 attendance_9:
-  user: studentB
+  student: student_9
   timestamp: <%= Time.now - 540 %>
-
-
-
-
-
-
-
-

@@ -6,8 +6,8 @@
 #  timestamp  :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  student_id :integer
-#  user_id    :integer          not null
+#  student_id :integer          not null
+#  user_id    :integer
 #
 # Indexes
 #
@@ -20,8 +20,7 @@
 #  user_id     (user_id => users.id)
 #
 class Attendance < ApplicationRecord
-  belongs_to :student, optional: true
-  belongs_to :user
-
-  validates :user_id, presence: true
+  belongs_to :student
+  belongs_to :user, optional: true
+  validates :student_id, presence: true
 end

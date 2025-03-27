@@ -14,9 +14,9 @@ class AttendancesController < ApplicationController
 
   # GET /attendances/new
   def new
-    @q = User.ransack(params[:q])
-    @users = @q.result(distinct: true)
-    @attendances = Attendance.order(timestamp: :desc).limit(20).includes(:user)
+    @q = Student.ransack(params[:q])
+    @students = @q.result(distinct: true)
+    @attendances = Attendance.order(timestamp: :desc).limit(20).includes(:student)
     respond_to do |format|
       format.html # For normal page loads
       format.turbo_stream # For Turbo-powered live updates
@@ -32,26 +32,46 @@ class AttendancesController < ApplicationController
     timezone = cookies[:timezone] || "UTC"
 
     Time.use_zone(timezone) do
-      permitted_params = params.permit(:user_id)  # Permit only user_id
-      permitted_params[:timestamp] = Time.current
+      # Permit only the 'uid' parameter from the QR code scan
+      permitted_params = params.permit(:uid)  # Expecting 'uid' from QR scan
 
-      Rails.logger.debug "Permitted Params: #{permitted_params.inspect}"
-      @attendance = Attendance.new(permitted_params)
+      # Find the student by their UID
+      student = Student.find_by(uid: permitted_params[:uid])
 
+      # If no student found, show an error
+      unless student
+        Rails.logger.debug "Student not found for UID: #{permitted_params[:uid]}"
+        return respond_to do |format|
+          format.html { redirect_to new_attendance_path, alert: "Invalid QR code. Student not found." }
+          format.json { render json: { error: "Invalid QR code. Student not found." }, status: :unprocessable_entity }
+        end
+      end
+
+      # Create a new attendance record for the student
+      @attendance = Attendance.new(
+        student_id: student.id,  # Use student_id after finding the student by uid
+        timestamp: Time.current,
+        user_id: current_user.id  # Assuming you're using the current logged-in user
+      )
+
+      # Save the attendance and respond accordingly
       if @attendance.save
         respond_to do |format|
-          format.html { redirect_to new_attendance_path(request.parameters), notice: "Attendance recorded." }
+          format.html { redirect_to new_attendance_path, notice: "Attendance recorded." }
           format.json { render json: { message: "Attendance successfully recorded." }, status: :created }
         end
       else
         Rails.logger.debug "Errors: #{@attendance.errors.full_messages}"
         respond_to do |format|
-          format.html { redirect_to new_attendance_path(request.parameters), alert: "Failed to save attendance." }
+          format.html { redirect_to new_attendance_path, alert: "Failed to save attendance." }
           format.json { render json: { error: @attendance.errors.full_messages.to_sentence }, status: :unprocessable_entity }
         end
       end
     end
   end
+
+
+
 
   # PATCH/PUT /attendances/1 or /attendances/1.json
   def update
@@ -84,6 +104,6 @@ class AttendancesController < ApplicationController
     end
 
     def attendance_params
-      params.require(:attendance).permit(:user_id, :timestamp)
+      params.require(:attendance).permit(:student_id, :timestamp)
     end
 end
