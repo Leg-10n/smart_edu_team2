@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include Authentication
+  include UserRole
   # ^ This is your authentication concern that sets up current_user and require_authentication
 
   # ----------------------------------------------------------------
