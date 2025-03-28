@@ -31,11 +31,38 @@ class AttendancesController < ApplicationController
   def create
     timezone = cookies[:timezone] || "UTC"
     Time.use_zone(timezone) do
-      p = params.permit(:student_id).merge(
-        user_id: Current.user&.id,  # Prevent nil user error
-        timestamp: Time.current
-      )
-      @attendance = Attendance.new(p)
+
+      # Check if we have a direct attendance parameter
+      if params[:attendance].present?
+        @attendance = Attendance.new(attendance_params)
+        @attendance.timestamp ||= Time.current
+        @attendance.user_id = current_user.id
+      else
+        # Permit only the 'uid' parameter from the QR code scan
+        permitted_params = params.permit(:uid)  # Expecting 'uid' from QR scan
+
+        # Find the student by their UID
+        student = Student.find_by(uid: permitted_params[:uid])
+
+        # If no student found, show an error
+        unless student
+          Rails.logger.debug "Student not found for UID: #{permitted_params[:uid]}"
+          return respond_to do |format|
+            format.html { redirect_to new_attendance_path, alert: "Invalid QR code. Student not found." }
+            format.json { render json: { error: "Invalid QR code. Student not found." }, status: :unprocessable_entity }
+          end
+        end
+
+        # Create a new attendance record for the student
+        @attendance = Attendance.new(
+          student_id: student.id,  # Use student_id after finding the student by uid
+          timestamp: Time.current,
+          user_id: current_user.id  # Assuming you're using the current logged-in user
+        )
+      end
+
+      # Save the attendance and respond accordingly
+
       if @attendance.save
         respond_to do |format|
           format.html { redirect_to new_attendance_path(request.parameters), notice: "Attendance recorded." }
@@ -74,13 +101,14 @@ class AttendancesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_attendance
-      @attendance = Attendance.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_attendance
+    @attendance = Attendance.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def attendance_params
-      params.require(:attendance).permit(:student_id, :timestamp, :user_id)
-    end
+
+  def attendance_params
+    params.require(:attendance).permit(:student_id, :timestamp, :user_id)
+  end
+
 end

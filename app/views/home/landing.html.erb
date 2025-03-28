@@ -1,0 +1,16 @@
+<!-- app/views/home/landing.html.erb -->
+<% content_for :title, "Welcome to SmartEdu" %>
+
+<div class="min-h-screen flex items-center justify-center px-4 bg-gradient-to-r from-blue-500 to-purple-500">
+  <div class="bg-white bg-opacity-75 p-8 rounded-lg text-center min-w-[32rem] shadow-2xl">
+    <h1 class="text-3xl font-bold mb-4">SmartEdu: The Future of School Check-ins</h1>
+    <p class="mb-6">
+      Simplify attendance tracking and streamline your school operations with SmartEdu!
+      Enjoy features like QR code check-ins, multi-tenant capabilities, and more.
+    </p>
+    <%= link_to "Log In", new_session_path, class: "btn btn-primary btn-wide w-full mt-2" %>
+    <div class="mt-3">
+      <%= link_to "Sign Up", new_signup_path, class: "btn btn-secondary w-full" %>
+    </div>
+  </div>
+</div>
