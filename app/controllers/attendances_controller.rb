@@ -30,8 +30,8 @@ class AttendancesController < ApplicationController
   # POST /attendances or /attendances.json
   def create
     timezone = cookies[:timezone] || "UTC"
-
     Time.use_zone(timezone) do
+
       # Check if we have a direct attendance parameter
       if params[:attendance].present?
         @attendance = Attendance.new(attendance_params)
@@ -62,15 +62,15 @@ class AttendancesController < ApplicationController
       end
 
       # Save the attendance and respond accordingly
+
       if @attendance.save
         respond_to do |format|
-          format.html { redirect_to new_attendance_path, notice: "Attendance recorded." }
+          format.html { redirect_to new_attendance_path(request.parameters), notice: "Attendance recorded." }
           format.json { render json: { message: "Attendance successfully recorded." }, status: :created }
         end
       else
-        Rails.logger.debug "Errors: #{@attendance.errors.full_messages}"
         respond_to do |format|
-          format.html { redirect_to new_attendance_path, alert: "Failed to save attendance." }
+          format.html { redirect_to new_attendance_path(request.parameters), alert: "Failed to save attendance." }
           format.json { render json: { error: @attendance.errors.full_messages.to_sentence }, status: :unprocessable_entity }
         end
       end
@@ -84,7 +84,6 @@ class AttendancesController < ApplicationController
         format.html { redirect_to @attendance, notice: "Attendance was successfully updated." }
         format.json { render :show, status: :ok, location: @attendance }
       else
-        Rails.logger.debug "Update failed: #{@attendance.errors.full_messages}"
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @attendance.errors, status: :unprocessable_entity }
       end
@@ -107,7 +106,9 @@ class AttendancesController < ApplicationController
     @attendance = Attendance.find(params[:id])
   end
 
+
   def attendance_params
     params.require(:attendance).permit(:student_id, :timestamp, :user_id)
   end
+
 end

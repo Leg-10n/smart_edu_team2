@@ -26,18 +26,6 @@
 #  discarded_at :datetime
 #  name         :string
 #  uid          :string           not null
-#
-# Indexes
-#
-#  index_students_on_discarded_at  (discarded_at)
-#
-#
-# Table name: students
-#
-#  id           :integer          not null, primary key
-#  discarded_at :datetime
-#  name         :string
-#  uid          :string           not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
