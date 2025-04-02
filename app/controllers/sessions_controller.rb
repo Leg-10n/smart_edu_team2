@@ -1,17 +1,18 @@
+# app/controllers/sessions_controller.rb
 class SessionsController < ApplicationController
-  allow_unauthenticated_access only: %i[ new create ]
-  rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: "Try again later." }
+  # Let visitors see login form & process creation without being logged in
+  allow_unauthenticated_access only: [ :new, :create ]
 
   def new
+    # Renders login form
   end
 
   def create
-    if user = User.authenticate_by(params.permit(:email_address, :password))
-      # Store the user_id in the session
-      Rails.logger.debug "Authenticated User ID: #{user.id}"
-      session[:user_id] = user.id  # Store the user's ID in the session
-      start_new_session_for user     # Continue with session initialization (if applicable)
-      redirect_to after_authentication_url
+    permitted = params.permit(:email_address, :password)
+    user = User.authenticate_by(permitted)  # Or however you actually authenticate
+    if user
+      start_new_session_for(user)
+      redirect_to after_authentication_url, notice: "Logged in successfully."
     else
       redirect_to new_session_path, alert: "Try another email address or password."
     end
@@ -19,6 +20,6 @@ class SessionsController < ApplicationController
 
   def destroy
     terminate_session
-    redirect_to new_session_path
+    redirect_to new_session_path, notice: "You have been logged out."
   end
 end
