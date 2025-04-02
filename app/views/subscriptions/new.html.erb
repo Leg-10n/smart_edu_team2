@@ -16,23 +16,14 @@
           <h2 class="card-title"><%= plan[:name] %></h2>
           <p class="text-xl font-semibold"><%= number_to_currency(plan[:amount]/100, unit: "฿") %> / <%= plan[:interval] %></p>
 
-          <!-- Form using the simple Omise form approach -->
+          <!-- Simple Omise form -->
           <%= form_with(url: subscriptions_path, method: :post, id: "payment-form-#{plan_key}", data: { turbo: false }) do |form| %>
             <%= form.hidden_field :plan_name, value: plan_key %>
 
-            <!-- Omise.js will replace this button with its payment form -->
-            <script type="text/javascript"
-                    src="https://cdn.omise.co/omise.js"
-                    data-key="<%= Rails.application.credentials.dig(:omise, :public_key) %>"
-                    data-image="https://www.example.com/images/logo.png"
-                    data-frame-label="SmartEdu"
-                    data-button-label="Pay now"
-                    data-submit-label="Pay <%= number_to_currency(plan[:amount]/100, unit: "฿") %>"
-                    data-amount="<%= plan[:amount] %>"
-                    data-currency="thb"
-                    data-default-payment-method="credit_card"
-                    data-other-payment-methods="">
-            </script>
+            <!-- This is the button that will trigger the payment form -->
+            <button type="button" id="checkout-button-<%= plan_key %>" class="btn btn-primary w-full">
+              Subscribe Now
+            </button>
           <% end %>
         </div>
       </div>
@@ -40,20 +31,64 @@
   </div>
 </div>
 
-<!-- Add debugging to see what parameters are being sent -->
+<!-- Include Omise.js -->
+<script src="https://cdn.omise.co/omise.js"></script>
+
+<!-- Initialize Omise form handling -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const forms = document.querySelectorAll('form[id^="payment-form-"]');
-        forms.forEach(form => {
-            form.addEventListener('submit', function(e) {
-                // Let the form submit normally, but log what's happening
-                console.log('Form submitted:', this.id);
-                // Wait a moment to check if the token was added
-                setTimeout(() => {
-                    const tokenInput = this.querySelector('input[name="omiseToken"]');
-                    console.log('Token input:', tokenInput ? tokenInput.value : 'Not found');
-                }, 100);
-            });
+        // Make sure Omise.js is loaded
+        if (typeof OmiseCard === 'undefined') {
+            console.error('OmiseCard is not defined. The Omise.js script might not be loaded correctly.');
+            return;
+        }
+
+        // Configure Omise with your public key
+        OmiseCard.configure({
+            publicKey: "<%= Rails.application.credentials.dig(:omise, :public_key) %>"
         });
+
+        // Setup each payment button
+        <% Subscription::PLANS.each do |plan_key, plan| %>
+        var button<%= plan_key.camelize %> = document.getElementById('checkout-button-<%= plan_key %>');
+        if (button<%= plan_key.camelize %>) {
+            button<%= plan_key.camelize %>.addEventListener('click', function(e) {
+                // Prevent default form submission
+                e.preventDefault();
+
+                // Open Omise payment form
+                OmiseCard.open({
+                    amount: <%= plan[:amount] %>,
+                    currency: 'thb',
+                    frameLabel: 'SmartEdu',
+                    submitLabel: 'Pay',
+                    buttonLabel: 'Pay <%= number_to_currency(plan[:amount]/100, unit: "฿") %>',
+                    defaultPaymentMethod: 'credit_card',
+                    onCreateTokenSuccess: function(token) {
+                        // Get the form
+                        var form = document.getElementById('payment-form-<%= plan_key %>');
+
+                        // Log success for debugging
+                        console.log('Token created successfully:', token);
+
+                        // Create hidden input for token
+                        var hiddenInput = document.createElement('input');
+                        hiddenInput.setAttribute('type', 'hidden');
+                        hiddenInput.setAttribute('name', 'omiseToken');
+                        hiddenInput.setAttribute('value', token);
+
+                        // Add token to form and submit
+                        form.appendChild(hiddenInput);
+                        form.submit();
+                    },
+                    onFormClosed: function() {
+                        console.log('Form was closed');
+                    }
+                });
+            });
+        } else {
+            console.error('Button for <%= plan_key %> not found');
+        }
+        <% end %>
     });
 </script>
