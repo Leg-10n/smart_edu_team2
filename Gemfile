@@ -78,3 +78,5 @@ gem "discard", "~> 1.4"
 gem "pry-byebug", "~> 3.10"
 
 gem "jquery-rails"
+
+gem 'omise', '~> 0.11.0'

@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                    :integer          not null, primary key
+#  discarded_at          :datetime
 #  email_address         :string           not null
 #  first_name            :string
 #  last_name             :string
@@ -17,7 +18,6 @@
 #
 # Indexes
 #
-#  index_users_on_discarded_at   (discarded_at)
 #  index_users_on_email_address  (email_address) UNIQUE
 #  index_users_on_uuid           (uuid) UNIQUE
 #
