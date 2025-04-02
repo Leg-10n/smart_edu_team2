@@ -30,6 +30,6 @@ class Payment < ApplicationRecord
   validates :status, presence: true
 
   def successful?
-    status == 'successful'
+    status == "successful"
   end
 end

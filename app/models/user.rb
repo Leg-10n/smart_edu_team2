@@ -64,7 +64,7 @@ class User < ApplicationRecord
   end
 
   def has_valid_subscription?
-    subscription_status == 'active' && (subscription_end_date.nil? || subscription_end_date > Time.current)
+    subscription_status == "active" && (subscription_end_date.nil? || subscription_end_date > Time.current)
   end
 
   def create_or_update_omise_customer(token)
@@ -91,7 +91,7 @@ class User < ApplicationRecord
   end
 
   def set_default_subscription_status
-    self.subscription_status = 'free'
+    self.subscription_status = "free"
   end
 
   def password_required?

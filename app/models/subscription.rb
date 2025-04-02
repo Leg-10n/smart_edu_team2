@@ -28,14 +28,14 @@ class Subscription < ApplicationRecord
   validates :status, presence: true
 
   PLANS = {
-    'basic_monthly' => { name: 'Basic Monthly', amount: 10000, interval: 'month' },
-    'premium_monthly' => { name: 'Premium Monthly', amount: 25000, interval: 'month' },
-    'basic_yearly' => { name: 'Basic Yearly', amount: 100000, interval: 'year' },
-    'premium_yearly' => { name: 'Premium Yearly', amount: 250000, interval: 'year' }
+    "basic_monthly" => { name: "Basic Monthly", amount: 10000, interval: "month" },
+    "premium_monthly" => { name: "Premium Monthly", amount: 25000, interval: "month" },
+    "basic_yearly" => { name: "Basic Yearly", amount: 100000, interval: "year" },
+    "premium_yearly" => { name: "Premium Yearly", amount: 250000, interval: "year" }
   }.freeze
 
   def active?
-    status == 'active' && (expires_at.nil? || expires_at > Time.current)
+    status == "active" && (expires_at.nil? || expires_at > Time.current)
   end
 
   def amount_in_thb

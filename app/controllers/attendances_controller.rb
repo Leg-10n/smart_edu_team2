@@ -31,7 +31,6 @@ class AttendancesController < ApplicationController
   def create
     timezone = cookies[:timezone] || "UTC"
     Time.use_zone(timezone) do
-
       # Check if we have a direct attendance parameter
       if params[:attendance].present?
         @attendance = Attendance.new(attendance_params)
@@ -110,5 +109,4 @@ class AttendancesController < ApplicationController
   def attendance_params
     params.require(:attendance).permit(:student_id, :timestamp, :user_id)
   end
-
 end

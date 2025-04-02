@@ -433,7 +433,7 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   kamal
-  omise (~> 0.11.0)
+  omise
   pagy (~> 9.3)
   propshaft
   pry-byebug (~> 3.10)

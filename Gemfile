@@ -79,4 +79,4 @@ gem "pry-byebug", "~> 3.10"
 
 gem "jquery-rails"
 
-gem 'omise', '~> 0.11.0'
+gem "omise"

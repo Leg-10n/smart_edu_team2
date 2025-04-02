@@ -37,8 +37,8 @@ class ApplicationController < ActionController::Base
   def check_subscription
     # Skip for unauthenticated users and for subscription management pages
     return unless authenticated?
-    return if controller_name == 'subscriptions' || controller_name == 'sessions' ||
-      (controller_name == 'home' && action_name == 'landing')
+    return if controller_name == "subscriptions" || controller_name == "sessions" ||
+      (controller_name == "home" && action_name == "landing")
 
     # Check if user has an active subscription
     unless current_user.has_valid_subscription?

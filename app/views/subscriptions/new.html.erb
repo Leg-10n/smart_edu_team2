@@ -16,55 +16,43 @@
           <h2 class="card-title"><%= plan[:name] %></h2>
           <p class="text-xl font-semibold"><%= number_to_currency(plan[:amount]/100, unit: "฿") %> / <%= plan[:interval] %></p>
 
-          <form action="<%= subscriptions_path %>" method="post" class="checkout-form" data-plan="<%= plan_key %>">
-            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-            <%= hidden_field_tag 'subscription[plan_name]', plan_key %>
-            <!-- This will be replaced by omise.js token on submit -->
-            <input type="hidden" name="omise_token" />
-            <button type="button" class="btn btn-primary checkout-button" data-amount="<%= plan[:amount] %>">
-              Subscribe Now
-            </button>
-          </form>
+          <%= form_with(url: subscriptions_path, method: :post, data: { turbo: false }) do |form| %>
+            <%= form.hidden_field :plan_name, value: plan_key %>
+            <script type="text/javascript" src="https://cdn.omise.co/omise.js"
+                    data-key="<%= Rails.application.credentials.dig(:omise, :public_key) %>"
+                    data-image="https://www.example.com/images/logo.png"
+                    data-frame-label="SmartEdu"
+                    data-button-label="Pay now"
+                    data-submit-label="Pay"
+                    data-amount="<%= plan[:amount] %>"
+                    data-currency="thb"
+                    data-default-payment-method="credit_card">
+            </script>
+          <% end %>
         </div>
       </div>
     <% end %>
   </div>
 </div>
 
-<!-- Include Omise.js -->
-<script src="https://cdn.omise.co/omise.js"></script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Configure Omise
-        Omise.setPublicKey("<%= Rails.application.credentials.dig(:omise, :public_key) %>");
+        // When Omise.js has successfully tokenized the card
+        window.addEventListener('omiseTokenCreated', function(e) {
+            // The token is in e.detail
+            let form = e.target.closest('form');
 
-        // Add click handlers to all checkout buttons
-        document.querySelectorAll('.checkout-button').forEach(function(button) {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
+            // Create a hidden input for the token
+            let hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'omise_token');
+            hiddenInput.setAttribute('value', e.detail);
 
-                const form = this.closest('form');
-                const amount = parseInt(this.getAttribute('data-amount'));
+            // Append the token input to the form
+            form.appendChild(hiddenInput);
 
-                // Open Omise form
-                Omise.createToken('card', {
-                    amount: amount
-                }, function(statusCode, response) {
-                    console.log('Omise response:', statusCode, response);
-
-                    if (statusCode === 200 && response.token) {
-                        // Set the token value
-                        form.querySelector('input[name="omise_token"]').value = response.token;
-
-                        // Submit form
-                        form.submit();
-                    } else {
-                        // Display error message
-                        alert('Payment failed: ' + (response.message || 'Unknown error'));
-                    }
-                });
-            });
+            // Submit the form
+            form.submit();
         });
     });
 </script>
