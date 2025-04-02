@@ -76,12 +76,13 @@ class User < ApplicationRecord
         card: token
       )
       update(omise_customer_id: customer.id)
+      customer
     else
       # Update existing customer with new card
       customer = Omise::Customer.retrieve(omise_customer_id)
       customer.update(card: token)
+      customer
     end
-    customer
   end
 
   private

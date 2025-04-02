@@ -16,17 +16,22 @@
           <h2 class="card-title"><%= plan[:name] %></h2>
           <p class="text-xl font-semibold"><%= number_to_currency(plan[:amount]/100, unit: "฿") %> / <%= plan[:interval] %></p>
 
-          <%= form_with(url: subscriptions_path, method: :post, data: { turbo: false }) do |form| %>
+          <!-- Form using the simple Omise form approach -->
+          <%= form_with(url: subscriptions_path, method: :post, id: "payment-form-#{plan_key}", data: { turbo: false }) do |form| %>
             <%= form.hidden_field :plan_name, value: plan_key %>
-            <script type="text/javascript" src="https://cdn.omise.co/omise.js"
+
+            <!-- Omise.js will replace this button with its payment form -->
+            <script type="text/javascript"
+                    src="https://cdn.omise.co/omise.js"
                     data-key="<%= Rails.application.credentials.dig(:omise, :public_key) %>"
                     data-image="https://www.example.com/images/logo.png"
                     data-frame-label="SmartEdu"
                     data-button-label="Pay now"
-                    data-submit-label="Pay"
+                    data-submit-label="Pay <%= number_to_currency(plan[:amount]/100, unit: "฿") %>"
                     data-amount="<%= plan[:amount] %>"
                     data-currency="thb"
-                    data-default-payment-method="credit_card">
+                    data-default-payment-method="credit_card"
+                    data-other-payment-methods="">
             </script>
           <% end %>
         </div>
@@ -35,24 +40,20 @@
   </div>
 </div>
 
+<!-- Add debugging to see what parameters are being sent -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // When Omise.js has successfully tokenized the card
-        window.addEventListener('omiseTokenCreated', function(e) {
-            // The token is in e.detail
-            let form = e.target.closest('form');
-
-            // Create a hidden input for the token
-            let hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'omise_token');
-            hiddenInput.setAttribute('value', e.detail);
-
-            // Append the token input to the form
-            form.appendChild(hiddenInput);
-
-            // Submit the form
-            form.submit();
+        const forms = document.querySelectorAll('form[id^="payment-form-"]');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                // Let the form submit normally, but log what's happening
+                console.log('Form submitted:', this.id);
+                // Wait a moment to check if the token was added
+                setTimeout(() => {
+                    const tokenInput = this.querySelector('input[name="omiseToken"]');
+                    console.log('Token input:', tokenInput ? tokenInput.value : 'Not found');
+                }, 100);
+            });
         });
     });
 </script>
