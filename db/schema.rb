@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_03_090454) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_03_091226) do
   create_table "attendances", force: :cascade do |t|
     t.integer "student_id"
     t.datetime "timestamp"
@@ -66,12 +66,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_090454) do
     t.string "first_name"
     t.string "last_name"
     t.string "uuid", null: false
+    t.integer "school_id", null: false
     t.index ["discarded_at"], name: "index_users_on_discarded_at"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["school_id"], name: "index_users_on_school_id"
     t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end
 
   add_foreign_key "attendances", "students"
   add_foreign_key "attendances", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "users", "schools"
 end
