@@ -9,8 +9,8 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-one:
+schoolA:
   name: SchoolA
 
-two:
+schoolB:
   name: SchoolB

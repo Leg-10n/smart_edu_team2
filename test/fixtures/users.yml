@@ -15,7 +15,7 @@
 #  uuid            :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  school_id       :integer          not null
+#  school_id       :integer
 #
 # Indexes
 #
@@ -33,74 +33,63 @@ one:
   password_digest: <%= password_digest %>
   role: unassigned
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolA
 
 two:
   email_address: two@example.com
   password_digest: <%= password_digest %>
   role: unassigned
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolA
 
 three:
   email_address: a@a.com
   password_digest: <%= password_digest %>
   role: unassigned
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolA
 
 adminA:
   email_address: admina1@test.com
   password_digest: <%= password_digest %>
   role: admin
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolA
 
 adminB:
   email_address: adminb1@test.com
   password_digest: <%= password_digest %>
   role: admin
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolB
 
 ownerA:
   email_address: ownera1@test.com
   password_digest: <%= password_digest %>
   role: owner
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolA
   
 ownerB:
-  email_address: ownera1@test.com
+  email_address: ownerb1@test.com
   password_digest: <%= password_digest %>
   role: owner
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolB
 
 teacherA:
   email_address: teachera1@test.com
   password_digest: <%= password_digest %>
   role: teacher
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolA
 
 teacherB:
   email_address: teacherb1@test.com
   password_digest: <%= password_digest %>
   role: admin
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolB
 
 studentA:
   email_address: studenta1@test.com
   password_digest: <%= password_digest %>
   role: student
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolA
 
 studentB:
   email_address: studentb1@test.com
   password_digest: <%= password_digest %>
   role: student
   uuid: <%= SecureRandom.uuid %>
-  school: SchoolB
