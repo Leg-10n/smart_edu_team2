@@ -1,41 +1,32 @@
-<div class="flex flex-row justify-around items-start mt-4">
-  <div class="bg-accent p-4 rounded-md w-fit">
-    <h1 class="text-xl">Students</h1>
-    <table class="table table-zebra p-20">
+<div class="flex justify-center mt-4">
+  <div class="bg-accent p-4 rounded-md w-1/2 max-w-6xl">
+    <h1 class="text-xl mb-4">Students</h1>
+    <table class="table table-zebra w-full">
       <thead>
         <tr>
-          <th>Student Name</th>
-          <th>Action</th>
+          <th class="px-4 py-2">Student Name</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Action</th>
         </tr>
       </thead>
       <tbody>
         <% @students.each do |student| %>
-          <tr class="hover" data-content="<%= student.name %>">
-            <td><%= highlight(student.name, params.dig(:q, :name_cont)) %></td>
-            <td><%= submit_tag "Check-in", name: "check_in", 
-              formaction: attendances_path(student_id: student.id),
-              formmethod: :post,
-              class: "btn btn-primary btn-xs",
-              data: {turbo_frame: "students" }%></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-  <div class="bg-yellow-200 p-4 rounded-md w-fit">
-    <h1 class="text-xl">Checked-in Students</h1>
-    <table id="latest-attendances" class="table table-zebra p-20">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @attendances.each do |attendance| %>
           <tr class="hover">
-            <td><%= attendance.student.name %></td>
-            <td class="timestamp" data-timestamp="<%= attendance.timestamp.iso8601 %>"><%= attendance.timestamp.strftime('%Y-%m-%d') %></td>
+            <td class="px-4 py-2"><%= highlight(student.name, params.dig(:q, :name_cont)) %></td>
+            <td class="px-4 py-2">
+              <% if @attendances.exists?(student_id: student.id) %>
+                Present
+              <% else %>
+                Absent
+              <% end %>
+            </td>
+            <td class="px-4 py-2">
+              <%= submit_tag "Check-in", name: "check_in", 
+                formaction: attendances_path(uid: student.uid),
+                formmethod: :post,
+                class: "btn btn-primary btn-sm",
+                data: { turbo_frame: "students" } %>
+            </td>
           </tr>
         <% end %>
       </tbody>

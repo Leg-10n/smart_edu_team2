@@ -11,12 +11,19 @@ class AttendancesTest < ApplicationSystemTestCase
     assert_selector "h2 span", text: "Attendances"
   end
 
-  test "should create attendance" do
+  test "should mark student as present" do
     visit new_attendance_url
-    within 'tr[data-content="Student 6"]' do
+
+    # Find the correct table row in the students table
+    row = find("table tbody tr", text: "Student 6", match: :first)
+
+    within(row) do
       click_on "Check-in"
     end
-    first_row = "table#latest-attendances tbody tr:first-of-type td:first-of-type"
-    assert_selector first_row, text: "Student 6"
+
+    # Verify that "Present" appears in the same row
+    within(row) do
+      assert_text "Present"
+    end
   end
 end
