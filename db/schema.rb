@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_27_161547) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_20_153123) do
   create_table "attendances", force: :cascade do |t|
-    t.integer "student_id", null: false
+    t.integer "student_id"
     t.datetime "timestamp"
-    t.integer "user_id"
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["student_id"], name: "index_attendances_on_student_id"
