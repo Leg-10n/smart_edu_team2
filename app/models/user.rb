@@ -2,6 +2,24 @@
 #
 # Table name: users
 #
+#  id              :integer          not null, primary key
+#  discarded_at    :datetime
+#  email_address   :string           not null
+#  first_name      :string
+#  is_active       :boolean          default(TRUE)
+#  last_name       :string
+#  password_digest :string           not null
+#  role            :string           default("unassigned")
+#  uuid            :string           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+# Indexes
+#
+#  index_users_on_discarded_at   (discarded_at)
+#  index_users_on_email_address  (email_address) UNIQUE
+#  index_users_on_uuid           (uuid) UNIQUE
+#
 
 #  id                    :integer          not null, primary key
 #  email_address         :string           not null
