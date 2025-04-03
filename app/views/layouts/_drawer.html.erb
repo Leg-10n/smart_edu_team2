@@ -59,6 +59,11 @@
 
       <% if authenticated? %>
         <li>
+          <%= link_to subscriptions_path do %>
+            <i class="fas fa-credit-card"></i> Subscription
+          <% end %>
+        </li>
+        <li>
           <%= link_to session_path, data: { turbo_method: :delete } do %>
             <i class="fas fa-sign-out-alt"></i> Logout
           <% end %>

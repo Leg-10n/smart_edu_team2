@@ -1,0 +1,60 @@
+<% content_for :title, "Your Subscriptions" %>
+
+<div class="max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-lg mt-4">
+  <h1 class="text-2xl font-bold mb-4">Your Subscriptions</h1>
+
+  <% if notice %>
+    <div class="alert alert-success mb-4">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <div class="mt-4">
+    <% if @subscriptions.empty? %>
+      <div class="alert alert-info">
+        <p>You don't have any subscriptions yet.</p>
+      </div>
+
+      <div class="mt-4">
+        <%= link_to "Subscribe Now", new_subscription_path, class: "btn btn-primary" %>
+      </div>
+    <% else %>
+      <div class="overflow-x-auto">
+        <table class="table table-zebra w-full">
+          <thead>
+          <tr>
+            <th>Plan</th>
+            <th>Started</th>
+            <th>Expires</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @subscriptions.each do |subscription| %>
+            <tr>
+              <td><%= Subscription::PLANS[subscription.plan_name][:name] %></td>
+              <td><%= subscription.started_at&.strftime("%B %d, %Y") %></td>
+              <td><%= subscription.expires_at&.strftime("%B %d, %Y") %></td>
+              <td>
+                  <span class="badge <%= subscription.active? ? 'badge-success' : 'badge-error' %>">
+                    <%= subscription.status.titleize %>
+                  </span>
+              </td>
+              <td>
+                <%= link_to "Details", subscription_path(subscription), class: "btn btn-xs btn-primary" %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <% unless current_user.has_valid_subscription? %>
+        <div class="mt-4">
+          <%= link_to "Subscribe Now", new_subscription_path, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

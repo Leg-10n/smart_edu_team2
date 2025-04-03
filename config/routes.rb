@@ -1,4 +1,3 @@
-# config/routes.rb
 Rails.application.routes.draw do
   # Landing page at root
   root "home#landing"
@@ -25,9 +24,13 @@ Rails.application.routes.draw do
   get "qrcodes", to: "qrcodes#show"
   get "scan_qr", to: "qrcodes#scan"
 
+  # Subscription management
+  resources :subscriptions do
+    member do
+      patch :cancel
+    end
+  end
+
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # If you want the old route for "home/index", remove it or redirect it; we replaced with "home#dashboard"
-  # get "home/index", to: redirect("/dashboard")
 end
