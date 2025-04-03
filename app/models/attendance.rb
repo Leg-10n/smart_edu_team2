@@ -20,7 +20,6 @@
 #  user_id     (user_id => users.id)
 #
 class Attendance < ApplicationRecord
-  belongs_to :student
-  belongs_to :user, optional: true
-  validates :student_id, presence: true
+  belongs_to :student, optional: true
+  belongs_to :user
 end

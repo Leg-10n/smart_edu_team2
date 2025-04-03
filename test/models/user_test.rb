@@ -2,19 +2,22 @@
 #
 # Table name: users
 #
-#  id              :integer          not null, primary key
-#  email_address   :string           not null
-#  first_name      :string
-#  is_active       :boolean          default(TRUE)
-#  last_name       :string
-#  password_digest :string           not null
-#  role            :string           default("unassigned")
-#  uuid            :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                    :integer          not null, primary key
+#  email_address         :string           not null
+#  first_name            :string
+#  last_name             :string
+#  password_digest       :string           not null
+#  role                  :string           default("unassigned")
+#  subscription_end_date :datetime
+#  subscription_status   :string           default("free")
+#  uuid                  :string           not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  omise_customer_id     :string
 #
 # Indexes
 #
+#  index_users_on_discarded_at   (discarded_at)
 #  index_users_on_email_address  (email_address) UNIQUE
 #  index_users_on_uuid           (uuid) UNIQUE
 #

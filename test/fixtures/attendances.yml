@@ -1,3 +1,5 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
 # == Schema Information
 #
 # Table name: attendances
@@ -19,38 +21,51 @@
 #  student_id  (student_id => students.id)
 #  user_id     (user_id => users.id)
 #
-attendance_1:
-  student: student_1
-  timestamp: <%= Time.now - 60 %>
+#
+# Table name: attendances
+#
+#  id         :integer          not null, primary key
+#  timestamp  :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  student_id :integer
+#  user_id    :integer          not null
+#
+# Indexes
+#
+#  index_attendances_on_student_id  (student_id)
+#  index_attendances_on_user_id     (user_id)
+#
+# Foreign Keys
+#
+#  student_id  (student_id => students.id)
+#  user_id     (user_id => users.id)
+#
+#
+# Table name: attendances
+#
+#  id         :integer          not null, primary key
+#  timestamp  :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  student_id :integer          not null
+#  user_id    :integer          not null
+#
+# Indexes
+#
+#  index_attendances_on_student_id  (student_id)
+#  index_attendances_on_user_id     (user_id)
+#
+# Foreign Keys
+#
+#  student_id  (student_id => students.id)
+#  user_id     (user_id => users.id)
+#
 
-attendance_2:
-  student: student_2
-  timestamp: <%= Time.now - 120 %>
+<% for i in 1..20 do %>
+attendance_<%= i %>:
+  student: student_<%= i %>
+  timestamp: <%= Time.now - (i * 60) %> # Adding a minute difference for each record
+  user: one
+<% end %>
 
-attendance_3:
-  student: student_3
-  timestamp: <%= Time.now - 180 %>
-
-attendance_4:
-  student: student_4
-  timestamp: <%= Time.now - 240 %>
-
-attendance_5:
-  student: student_5
-  timestamp: <%= Time.now - 300 %>
-
-attendance_6:
-  student: student_6
-  timestamp: <%= Time.now - 360 %>
-
-attendance_7:
-  student: student_7
-  timestamp: <%= Time.now - 420 %>
-
-attendance_8:
-  student: student_8
-  timestamp: <%= Time.now - 480 %>
-
-attendance_9:
-  student: student_9
-  timestamp: <%= Time.now - 540 %>
