@@ -23,17 +23,50 @@
 #  user_id  (user_id => users.id)
 #
 one:
-  plan_name: MyString
+  plan_name: basic_monthly
   user: one
-  status: MyString
-  omise_subscription_id: MyString
-  started_at: 2025-04-03 02:54:20
-  expires_at: 2025-04-03 02:54:20
+  status: active
+  omise_subscription_id: sub_test_12345
+  started_at: <%= 1.month.ago %>
+  expires_at: <%= 1.month.from_now %>
 
 two:
-  plan_name: MyString
+  plan_name: basic_yearly
   user: two
-  status: MyString
-  omise_subscription_id: MyString
-  started_at: 2025-04-03 02:54:20
-  expires_at: 2025-04-03 02:54:20
+  status: active
+  omise_subscription_id: sub_test_67890
+  started_at: <%= 1.month.ago %>
+  expires_at: <%= 11.months.from_now %>
+
+teacher_subscription:
+  plan_name: pro_monthly
+  user: teacherA
+  status: active
+  omise_subscription_id: sub_test_teacher
+  started_at: <%= 2.weeks.ago %>
+  expires_at: <%= 2.weeks.from_now %>
+
+admin_subscription:
+  plan_name: pro_yearly
+  user: adminA
+  status: active
+  omise_subscription_id: sub_test_admin
+  started_at: <%= 3.months.ago %>
+  expires_at: <%= 9.months.from_now %>
+
+owner_subscription:
+  plan_name: enterprise_yearly
+  user: ownerA
+  status: active
+  omise_subscription_id: sub_test_owner
+  started_at: <%= 6.months.ago %>
+  expires_at: <%= 6.months.from_now %>
+
+# Include a cancelled subscription for testing that state
+cancelled:
+  plan_name: basic_monthly
+  user: three
+  status: cancelled
+  omise_subscription_id: sub_test_cancelled
+  started_at: <%= 2.months.ago %>
+  expires_at: <%= 1.month.ago %>
