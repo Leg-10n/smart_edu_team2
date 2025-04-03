@@ -48,3 +48,4 @@ class ApplicationController < ActionController::Base
       redirect_to new_subscription_path, alert: "Please subscribe to access this feature."
     end
   end
+end
