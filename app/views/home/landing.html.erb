@@ -1,9 +1,11 @@
+landing
+
 <!-- app/views/home/landing.html.erb -->
 <% content_for :title, "Welcome to SmartEdu" %>
 
 <!-- Navigation Bar -->
 <nav class="fixed top-0 left-0 w-full bg-white shadow-md py-3 px-6 flex justify-between items-center z-50">
-  <h1 class="text-xl font-bold text-gray-900">SmartEdu</h1>
+  <h1 class="text-xl font-bold text-gray-900"><%= render "shared/logo_text" %></h1>
   <div>
     <%= link_to "Log In", new_session_path, class: "text-gray-700 hover:text-blue-600 px-4" %>
     <%= link_to "Sign Up", new_signup_path, class: "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" %>
@@ -57,17 +59,17 @@
       <!-- Join Us No Matter Where You Are -->
       <div class="bg-white p-6 rounded-lg shadow-md text-center">
         <h4 class="text-xl font-semibold">
-          <i class="fa-solid fa-earth-americas"></i> Join Us No Matter Where You Are
+          <i class="fa-solid fa-shield-heart"></i> Safety and Accountability
         </h4>
-        <p class="text-gray-600 mt-2">We offer our services to any educational institution all around the entirety of the globe!</p>
+        <p class="text-gray-600 mt-2">Parents of your students no longer need to worry about safety due to our accountability system.</p>
       </div>
 
       <!-- Join Us No Matter Where You Are -->
       <div class="bg-white p-6 rounded-lg shadow-md text-center">
         <h4 class="text-xl font-semibold">
-          <i class="fa-solid fa-earth-americas"></i> Join Us No Matter Where You Are
+          <i class="fa-solid fa-money-check-dollar"></i> Subscription Based Service
         </h4>
-        <p class="text-gray-600 mt-2">We offer our services to any educational institution all around the entirety of the globe!</p>
+        <p class="text-gray-600 mt-2">Don't like our service? Cancel your monthly subscription any time without any additional fees.</p>
       </div>
     </div>
   </div>
@@ -88,8 +90,8 @@
         <p class="text-gray-700">Students Enrolled</p>
       </div>
       <div class="p-6 rounded-lg shadow-md bg-green-100">
-        <h4 class="text-3xl font-bold text-green-600">99.9%</h4>
-        <p class="text-gray-700">Uptime Reliability</p>
+        <h4 class="text-3xl font-bold text-green-600">Online</h4>
+        <p class="text-gray-700">Server Status</p>
       </div>
     </div>
   </div>
