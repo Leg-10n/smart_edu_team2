@@ -71,7 +71,7 @@ ownerA:
   school_id: 1
   
 ownerB:
-  email_address: ownera1@test.com
+  email_address: ownerb1@test.com
   password_digest: <%= password_digest %>
   role: owner
   uuid: <%= SecureRandom.uuid %>
