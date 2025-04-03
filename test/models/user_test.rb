@@ -13,7 +13,7 @@
 #  uuid            :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  school_id       :integer          not null
+#  school_id       :integer
 #
 # Indexes
 #
