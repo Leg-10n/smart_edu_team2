@@ -10,7 +10,7 @@
 #  updated_at :datetime         not null
 #
 one:
-  name: MyString
+  name: SchoolA
 
 two:
-  name: MyString
+  name: SchoolB
