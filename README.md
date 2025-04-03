@@ -114,6 +114,6 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 
 ## Contact
 
-For communication, please refer to the discord: [Discord](https://discord.gg/rrmamUF3mw)
+For communication, please refer to the [Discord Server](https://discord.gg/rrmamUF3mw)
 
 Agile development management: https://hir0yat0.atlassian.net/jira/software/projects/SWEP2/boards/1
