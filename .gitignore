@@ -185,3 +185,5 @@ secret/
 secrets/
 *.key
 yarn.lock
+
+.idea/
