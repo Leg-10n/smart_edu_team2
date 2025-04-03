@@ -33,74 +33,74 @@ one:
   password_digest: <%= password_digest %>
   role: unassigned
   uuid: <%= SecureRandom.uuid %>
-  school_id: 1
+  school: schoolA
 
 two:
   email_address: two@example.com
   password_digest: <%= password_digest %>
   role: unassigned
   uuid: <%= SecureRandom.uuid %>
-  school_id: 1
+  school: schoolA
 
 three:
   email_address: a@a.com
   password_digest: <%= password_digest %>
   role: unassigned
   uuid: <%= SecureRandom.uuid %>
-  school_id: 1
+  school: schoolA
 
 adminA:
   email_address: admina1@test.com
   password_digest: <%= password_digest %>
   role: admin
   uuid: <%= SecureRandom.uuid %>
-  school_id: 1
+  school: schoolA
 
 adminB:
   email_address: adminb1@test.com
   password_digest: <%= password_digest %>
   role: admin
   uuid: <%= SecureRandom.uuid %>
-  school_id: 2
+  school: schoolB
 
 ownerA:
   email_address: ownera1@test.com
   password_digest: <%= password_digest %>
   role: owner
   uuid: <%= SecureRandom.uuid %>
-  school_id: 1
+  school: schoolA
   
 ownerB:
   email_address: ownerb1@test.com
   password_digest: <%= password_digest %>
   role: owner
   uuid: <%= SecureRandom.uuid %>
-  school_id: 2
+  school: schoolB
 
 teacherA:
   email_address: teachera1@test.com
   password_digest: <%= password_digest %>
   role: teacher
   uuid: <%= SecureRandom.uuid %>
-  school_id: 1
+  school: schoolA
 
 teacherB:
   email_address: teacherb1@test.com
   password_digest: <%= password_digest %>
   role: admin
   uuid: <%= SecureRandom.uuid %>
-  school_id: 2
+  school: schoolB
 
 studentA:
   email_address: studenta1@test.com
   password_digest: <%= password_digest %>
   role: student
   uuid: <%= SecureRandom.uuid %>
-  school_id: 1
+  school: schoolA
 
 studentB:
   email_address: studentb1@test.com
   password_digest: <%= password_digest %>
   role: student
   uuid: <%= SecureRandom.uuid %>
-  school_id: 2
+  school: schoolB
