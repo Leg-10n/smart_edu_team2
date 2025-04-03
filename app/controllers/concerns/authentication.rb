@@ -24,7 +24,10 @@ module Authentication
 
   def require_authentication
     authenticated? || request_authentication
-  end
+      redirect_to new_session_path, alert: "Please sign in to continue" unless authenticated?
+    end
+
+
 
   def request_authentication
     session[:return_to_after_authenticating] = request.url

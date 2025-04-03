@@ -69,7 +69,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_20_153123) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "discarded_at"
     t.string "role", default: "unassigned"
     t.string "first_name"
     t.string "last_name"

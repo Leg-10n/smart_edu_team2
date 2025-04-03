@@ -1,0 +1,53 @@
+<div class="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+  <h1 class="text-2xl font-bold mb-6"><%= @subscription.plan_name.capitalize %> Subscription</h1>
+
+  <div class="mb-6 border-b pb-4">
+    <div class="flex justify-between items-center mb-2">
+      <h2 class="text-lg font-semibold">Status</h2>
+      <span class="<%= @subscription.active? ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' %> py-1 px-3 rounded-full text-sm">
+        <%= @subscription.status.capitalize %>
+      </span>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mt-4">
+      <div>
+        <p class="text-gray-600 text-sm">Started</p>
+        <p class="font-medium"><%= @subscription.started_at&.strftime("%b %d, %Y") %></p>
+      </div>
+      <div>
+        <p class="text-gray-600 text-sm">Expires</p>
+        <p class="font-medium"><%= @subscription.expires_at&.strftime("%b %d, %Y") %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold mb-4">Payment History</h2>
+
+    <% if @subscription.payments.any? %>
+      <div class="space-y-3">
+        <% @subscription.payments.order(created_at: :desc).each do |payment| %>
+          <div class="p-3 border rounded flex justify-between items-center">
+            <div>
+              <p class="font-medium">฿<%= payment.amount %></p>
+              <p class="text-sm text-gray-600"><%= payment.paid_at&.strftime("%b %d, %Y") %></p>
+            </div>
+            <span class="<%= payment.status == 'successful' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' %> py-1 px-3 rounded-full text-xs">
+              <%= payment.status.capitalize %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-600 text-center p-4 bg-gray-100 rounded">No payment records found</p>
+    <% end %>
+  </div>
+
+  <div class="flex justify-between">
+    <%= link_to "Back to Subscriptions", subscriptions_path, class: "text-blue-600 hover:text-blue-900" %>
+
+    <% if @subscription.active? %>
+      <%= button_to "Cancel Subscription", cancel_subscription_path(@subscription), method: :post, class: "py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded", data: { confirm: "Are you sure you want to cancel this subscription?" } %>
+    <% end %>
+  </div>
+</div>

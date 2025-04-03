@@ -1,0 +1,108 @@
+<div class="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+  <h1 class="text-2xl font-bold mb-6">Your Subscription</h1>
+
+  <% active_subscription = Current.user.active_subscription %>
+
+  <div class="mb-6 p-4 <%= active_subscription&.status == 'active' ? 'bg-green-100' : (active_subscription&.status == 'grace' ? 'bg-yellow-100' : 'bg-red-100') %> rounded">
+    <div class="flex items-start">
+      <div class="<%= active_subscription&.status == 'active' ? 'bg-green-500' : (active_subscription&.status == 'grace' ? 'bg-yellow-500' : 'bg-red-500') %> p-2 rounded-full mr-4">
+        <!-- Icon based on status -->
+        <% if active_subscription&.status == 'active' %>
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        <% elsif active_subscription&.status == 'grace' %>
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        <% else %>
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        <% end %>
+      </div>
+      <div>
+        <h2 class="text-lg font-bold">
+          <% if active_subscription&.status == 'active' %>
+            Active Subscription
+          <% elsif active_subscription&.status == 'grace' %>
+            Grace Period
+          <% else %>
+            No Active Subscription
+          <% end %>
+        </h2>
+        <p class="text-sm mt-1">
+          <% if active_subscription&.status == 'active' %>
+            Your <%= active_subscription.plan_name.capitalize %> subscription is active until <%= active_subscription.expires_at&.strftime("%B %d, %Y") %>.
+          <% elsif active_subscription&.status == 'grace' %>
+            <% days_left = [(active_subscription.expires_at - Time.now) / 1.day, 0].max.ceil %>
+            Your subscription has entered the grace period. You have <%= days_left %> days left to renew.
+          <% else %>
+            You don't have an active subscription. Subscribe now to access premium features.
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <% if !Current.user.subscribed? %>
+    <div class="mt-4 mb-6">
+      <%= link_to "Subscribe Now", new_payment_path, class: "inline-block py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded" %>
+    </div>
+  <% end %>
+
+  <% if @subscriptions.any? %>
+    <h2 class="text-xl font-semibold mb-4">Subscription History</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white">
+        <thead>
+        <tr class="bg-gray-100 text-gray-700 uppercase text-sm leading-normal">
+          <th class="py-3 px-6 text-left">Plan</th>
+          <th class="py-3 px-6 text-left">Status</th>
+          <th class="py-3 px-6 text-left">Started</th>
+          <th class="py-3 px-6 text-left">Expires</th>
+          <th class="py-3 px-6 text-center">Actions</th>
+        </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm">
+        <% @subscriptions.each do |subscription| %>
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+            <td class="py-3 px-6 text-left"><%= subscription.plan_name.capitalize %></td>
+            <td class="py-3 px-6 text-left">
+              <% status_color = case subscription.status
+                                when 'active' then 'bg-green-200 text-green-800'
+                                when 'grace' then 'bg-yellow-200 text-yellow-800'
+                                when 'canceled' then 'bg-red-200 text-red-800'
+                                when 'suspended' then 'bg-orange-200 text-orange-800'
+                                else 'bg-gray-200 text-gray-800'
+                                end %>
+              <span class="<%= status_color %> py-1 px-3 rounded-full text-xs">
+                <%= subscription.status.capitalize %>
+              </span>
+            </td>
+            <td class="py-3 px-6 text-left"><%= subscription.started_at&.strftime("%b %d, %Y") %></td>
+            <td class="py-3 px-6 text-left"><%= subscription.expires_at&.strftime("%b %d, %Y") %></td>
+            <td class="py-3 px-6 text-center">
+              <%= link_to "View", subscription_path(subscription), class: "text-blue-600 hover:text-blue-900 mr-2" %>
+              <% if subscription.status == 'active' %>
+                <%= button_to "Cancel", cancel_subscription_path(subscription), method: :post, class: "text-red-600 hover:text-red-900", data: { confirm: "Are you sure you want to cancel this subscription?" } %>
+              <% elsif !Current.user.subscribed? %>
+                <%= link_to "Renew", new_payment_path, class: "text-green-600 hover:text-green-900" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="bg-gray-100 p-8 rounded text-center">
+      <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <h2 class="text-xl font-semibold mb-2">No Subscription History</h2>
+      <p class="text-gray-600 mb-6">You haven't subscribed to any plans yet.</p>
+      <%= link_to "Subscribe Now", new_payment_path, class: "inline-block py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded" %>
+    </div>
+  <% end %>
+</div>

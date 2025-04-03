@@ -1,0 +1,111 @@
+<!-- app/views/admin/subscriptions/show.html.erb -->
+<div class="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Subscription Details</h1>
+    <%= link_to "Back to List", admin_subscriptions_path, class: "text-blue-600 hover:text-blue-900" %>
+  </div>
+
+  <div class="bg-gray-100 p-4 rounded mb-6">
+    <h2 class="text-lg font-semibold mb-2">User Information</h2>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <p class="text-sm text-gray-600">Email</p>
+        <p class="font-medium"><%= @subscription.user.email_address %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Subscription Status</p>
+        <p class="font-medium">
+          <%= @subscription.user.subscription_status.capitalize %>
+          <% if @subscription.user.subscription_end_date %>
+            until <%= @subscription.user.subscription_end_date.strftime("%b %d, %Y") %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-6 border-b pb-4">
+    <h2 class="text-lg font-semibold mb-2">Subscription Information</h2>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <p class="text-sm text-gray-600">ID</p>
+        <p class="font-medium"><%= @subscription.id %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Omise Subscription ID</p>
+        <p class="font-medium"><%= @subscription.omise_subscription_id %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Plan</p>
+        <p class="font-medium"><%= @subscription.plan_name.capitalize %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Status</p>
+        <p class="font-medium">
+          <span class="<%= @subscription.active? ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' %> py-1 px-3 rounded-full text-xs">
+            <%= @subscription.status.capitalize %>
+          </span>
+        </p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Started</p>
+        <p class="font-medium"><%= @subscription.started_at&.strftime("%b %d, %Y %H:%M") %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Expires</p>
+        <p class="font-medium"><%= @subscription.expires_at&.strftime("%b %d, %Y %H:%M") %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold mb-4">Extend Subscription</h2>
+    <%= form_with url: extend_admin_subscription_path(@subscription), method: :post, class: "flex items-end" do |f| %>
+      <div class="mr-4 flex-grow">
+        <%= f.label :days, "Extension (days)", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.number_field :days, min: 1, class: "mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+      </div>
+      <%= f.submit "Extend Subscription", class: "py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    <% end %>
+  </div>
+
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold mb-4">Payment History</h2>
+    <% if @payments.any? %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid At</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Omise ID</th>
+          </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+          <% @payments.each do |payment| %>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= payment.id %></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">฿<%= payment.amount %></td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="<%= payment.status == 'successful' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' %> py-1 px-3 rounded-full text-xs">
+                    <%= payment.status.capitalize %>
+                  </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <%= payment.paid_at&.strftime("%b %d, %Y %H:%M") || "-" %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs">
+                <%= payment.omise_charge_id %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center py-4 text-gray-500">No payment records found</div>
+    <% end %>
+  </div>
+</div>

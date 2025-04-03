@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include Authentication
+  include PaymentAccess
   include UserRole
   helper_method :current_user
 

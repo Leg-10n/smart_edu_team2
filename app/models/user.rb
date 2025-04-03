@@ -2,7 +2,6 @@
 #
 # Table name: users
 #
-
 #  id                    :integer          not null, primary key
 #  email_address         :string           not null
 #  first_name            :string
@@ -15,11 +14,9 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  omise_customer_id     :string
-
 #
 # Indexes
 #
-#  index_users_on_discarded_at   (discarded_at)
 #  index_users_on_email_address  (email_address) UNIQUE
 #  index_users_on_uuid           (uuid) UNIQUE
 #
@@ -28,6 +25,8 @@ class User < ApplicationRecord
 
   has_secure_password
   has_many :sessions, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+  has_many :payments, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -41,6 +40,31 @@ class User < ApplicationRecord
     self.role ||= "unassigned" if new_record?
   end
 
+  def subscribed?
+    subscription_status == "active" &&
+      (subscription_end_date.nil? || subscription_end_date > Time.current)
+  end
+
+  def active_subscription
+    subscriptions.where(status: "active").order(created_at: :desc).first
+  end
+
+  def omise_customer
+    if omise_customer_id.present?
+      Omise::Customer.retrieve(omise_customer_id)
+    else
+      customer = Omise::Customer.create(
+        email: email_address,
+        description: "User ID: #{id} - #{first_name} #{last_name}"
+      )
+      update(omise_customer_id: customer.id)
+      customer
+    end
+  rescue Omise::Error => e
+    Rails.logger.error "Omise error: #{e.message}"
+    nil
+  end
+
   private
 
   def set_default_uuid
@@ -49,5 +73,15 @@ class User < ApplicationRecord
 
   def password_required?
     new_record? || password.present?
+  end
+
+  def in_grace_period?
+    subscription_status == "grace" &&
+      subscription_end_date && subscription_end_date > Time.current
+  end
+
+  def subscription_days_remaining
+    return 0 unless subscription_end_date && subscription_end_date > Time.current
+    ((subscription_end_date - Time.current) / 1.day).ceil
   end
 end

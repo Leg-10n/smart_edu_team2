@@ -1,0 +1,113 @@
+<!-- app/views/payments/new.html.erb -->
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <h1 class="text-2xl font-bold mb-6 text-center">Subscribe to Premium</h1>
+
+  <% if flash[:alert] %>
+    <div class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <%= form_with url: payments_path, id: "payment-form", data: { controller: "omise-form" } do |f| %>
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-4">Select a Plan</h2>
+      <div class="space-y-2">
+        <div class="flex items-center">
+          <%= f.radio_button :plan, "premium", class: "h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500", checked: true %>
+          <%= f.label :plan_premium, "Premium - ฿599/month", class: "ml-2 block text-sm font-medium text-gray-700" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-4">Payment Information</h2>
+      <div class="space-y-4">
+        <!-- Name on Card -->
+        <div>
+          <label for="card_name" class="block text-sm font-medium text-gray-700">Name on Card</label>
+          <div class="mt-1">
+            <input id="card_name" class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="John Doe" />
+          </div>
+        </div>
+
+        <!-- Card Number -->
+        <div>
+          <label for="card_number" class="block text-sm font-medium text-gray-700">Card Number</label>
+          <div class="mt-1">
+            <input id="card_number" class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="1234 5678 9012 3456" />
+          </div>
+        </div>
+
+        <!-- Expiration and CVC -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="card_expiration_month" class="block text-sm font-medium text-gray-700">Expiration Month</label>
+            <div class="mt-1">
+              <input id="card_expiration_month" class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="MM" />
+            </div>
+          </div>
+          <div>
+            <label for="card_expiration_year" class="block text-sm font-medium text-gray-700">Expiration Year</label>
+            <div class="mt-1">
+              <input id="card_expiration_year" class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="YY" />
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="card_cvc" class="block text-sm font-medium text-gray-700">CVC</label>
+          <div class="mt-1">
+            <input id="card_cvc" class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="123" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden field for Omise Token -->
+    <%= f.hidden_field :omise_token %>
+
+    <!-- Submit Button -->
+    <div>
+      <%= f.submit "Subscribe Now", id: "submit-button", class: "w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    </div>
+  <% end %>
+</div>
+
+<script type="text/javascript" src="https://cdn.omise.co/omise.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set the public key
+        Omise.setPublicKey("<%= ENV['OMISE_PUBLIC_KEY'] %>");
+
+        const form = document.getElementById('payment-form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Disable the submit button to prevent repeated clicks
+            document.getElementById('submit-button').disabled = true;
+
+            // Create a token with Omise
+            Omise.createToken('card', {
+                name: document.getElementById('card_name').value,
+                number: document.getElementById('card_number').value,
+                expiration_month: document.getElementById('card_expiration_month').value,
+                expiration_year: document.getElementById('card_expiration_year').value,
+                security_code: document.getElementById('card_cvc').value
+            }, function(statusCode, response) {
+                document.getElementById('submit-button').disabled = false;
+
+                if (response.object === 'token') {
+                    // Set the token value in the hidden field
+                    document.getElementById('omise_token').value = response.id;
+
+                    // Submit the form
+                    form.submit();
+                } else {
+                    // Display an error message
+                    alert(response.message);
+                    console.error(response);
+                }
+            });
+        });
+    });
+</script>
