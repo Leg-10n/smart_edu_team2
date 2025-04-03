@@ -1,13 +1,14 @@
 # README
 
-![CI](https://github.com/cs-muic/smart_edu_team2-deployment-test/actions/workflows/ci.yml/badge.svg)
+[![My Skills](https://skillicons.dev/icons?i=ruby,rails,html,css,tailwind,yarn,sqlite,github)](https://skillicons.dev)
 
-![Deploy](https://github.com/cs-muic/smart_edu_team2-deployment-test/actions/workflows/deploy.yml/badge.svg)
+![image]({https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white})
+
+![CI](https://github.com/cs-muic/smart_edu_team2-deployment-test/actions/workflows/ci.yml/badge.svg) ![Deploy](https://github.com/cs-muic/smart_edu_team2-deployment-test/actions/workflows/deploy.yml/badge.svg)
 
 # Smart Edu
 
-See our web service in action:
-https://bbb.buggycode.space/
+See our web service in action: https://bbb.buggycode.space/
 
 ## Overview
 
@@ -110,3 +111,5 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 ## Contact
 
 For support or collaboration, contact **your-email@example.com**.
+
+Agile development management: https://hir0yat0.atlassian.net/jira/software/projects/SWEP2/boards/1
