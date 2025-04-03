@@ -30,7 +30,6 @@ test "should create attendance with nested param" do
   test "should create attendance using UID" do
     assert_difference("Attendance.count", 1) do
       post attendances_url, params: { uid: @student.uid }, as: :json
-
     end
   end
 
@@ -45,7 +44,6 @@ test "should create attendance with nested param" do
   end
 
   test "should update attendance" do
-
     patch attendance_url(@attendance), params: {
       attendance: {
         student_id: @student.id,
@@ -92,7 +90,6 @@ test "should create attendance with nested param" do
 
       assert_no_difference("Attendance.count") do
         post attendances_url, params: { uid: @student.uid }
-
       end
 
       assert_redirected_to root_path
