@@ -38,4 +38,10 @@ module UserRole
       redirect_to root_path, alert: "You must have role [ unassigned ] to access the requested page."
     end
   end
+
+  def require_admin_or_owner
+    unless admin? || owner?
+      redirect_to root_path, alert: "You must have role [ owner or admin ] to access the requested page."
+    end
+  end
 end
