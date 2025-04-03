@@ -36,5 +36,5 @@
 <% for i in 1..100 do %>
 student_<%=i%>:
   name: Student <%=i%>
-  uid: UID_<%=i%>
+  uid: <%=i%>
 <% end %>
