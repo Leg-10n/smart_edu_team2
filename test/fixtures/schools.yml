@@ -10,7 +10,7 @@
 #  updated_at  :datetime         not null
 #
 schoolA:
-  name: SchoolA
+  school_name: SchoolA
 
 schoolB:
-  name: SchoolB
+  school_name: SchoolB
