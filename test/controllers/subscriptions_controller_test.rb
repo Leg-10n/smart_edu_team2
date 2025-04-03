@@ -2,17 +2,18 @@ require "test_helper"
 
 class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
   test "should get new" do
-    get subscriptions_new_url
+    get new_subscription_path
     assert_response :success
   end
 
-  test "should get create" do
-    get subscriptions_create_url
+  test "should get index" do
+    get subscriptions_path
     assert_response :success
   end
 
   test "should get show" do
-    get subscriptions_show_url
+    # Assuming you have fixtures or a setup method that creates a subscription
+    get subscription_path(subscriptions(:one))
     assert_response :success
   end
 end
