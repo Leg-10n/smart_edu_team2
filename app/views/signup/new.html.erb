@@ -1,30 +1,41 @@
-<%= render "shared/single_box" do %>
-  <h1 class="text-3xl font-bold text-center pb-4">
-    <%= render "shared/logo_text" %> Sign Up
-  </h1>
-  
-  <% if @user.errors.any? %>
-    <div class="alert alert-error mt-4">
-      <ul>
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<div class="flex min-h-screen items-center justify-center bg-gray-100 px-4 py-10">
+  <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md space-y-6">
+    <h1 class="text-2xl font-bold text-center">
+      <%= render "shared/logo_text" %> Sign Up
+    </h1>
+
+    <% if @user.errors.any? %>
+      <div class="bg-red-100 text-red-700 p-4 rounded mb-6">
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with(model: @user, url: signup_index_path, html: { autocomplete: "on" }) do |form| %>
+      <div class="space-y-4">
+        <%= form.text_field :first_name, required: true, placeholder: "First Name", class: "w-full px-4 py-3 border rounded-lg focus:ring focus:ring-primary-300" %>
+
+        <%= form.text_field :last_name, required: true, placeholder: "Last Name", class: "w-full px-4 py-3 border rounded-lg focus:ring focus:ring-primary-300" %>
+
+        <%= form.email_field :email_address, required: true, autocomplete: "username", placeholder: "Email Address", class: "w-full px-4 py-3 border rounded-lg focus:ring focus:ring-primary-300" %>
+
+        <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Password", class: "w-full px-4 py-3 border rounded-lg focus:ring focus:ring-primary-300" %>
+
+        <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Confirm Password", class: "w-full px-4 py-3 border rounded-lg focus:ring focus:ring-primary-300" %>
+      </div>
+
+      <div class="mt-6">
+        <%= form.submit "Sign Up", class: "w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold" %>
+      </div>
+    <% end %>
+
+    <div class="text-center text-gray-600 my-6">or</div>
+
+    <div>
+      <%= link_to "Sign in", new_session_path, class: "block text-center w-full bg-gray-200 py-3 rounded-lg hover:bg-gray-300 transition font-semibold" %>
     </div>
-  <% end %>
-
-  <%= form_with(model: @user, url: signup_index_path, class: "form-control mt-4", html: { autocomplete: "on" }) do |form| %>
-    <%= form.email_field :email_address, class: "input input-bordered w-full mt-2", placeholder: "Email", autocomplete: "username" %>
-    <%= form.password_field :password, class: "input input-bordered w-full mt-2", placeholder: "Password", autocomplete: "new-password" %>
-    <%= form.password_field :password_confirmation, class: "input input-bordered w-full mt-2", placeholder: "Confirm Password", autocomplete: "new-password" %>
-    
-    <!-- Add first name and last name fields -->
-    <%= form.text_field :first_name, class: "input input-bordered w-full mt-2", placeholder: "First Name" %>
-    <%= form.text_field :last_name, class: "input input-bordered w-full mt-2", placeholder: "Last Name" %>
-
-    <%= form.submit "Sign Up", class: "btn btn-primary w-full mt-2" %>
-  <% end %>
-
-  <p>or</p>
-  <%= link_to "Back to Sign In", new_session_path, class:"link link-info mt-4" %>
-<% end %>
+  </div>
+</div>
