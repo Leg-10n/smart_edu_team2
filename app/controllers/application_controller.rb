@@ -26,7 +26,11 @@ class ApplicationController < ActionController::Base
     current_user&.role == "unassigned"
   end
 
-  helper_method :teacher?, :admin?, :student?, :owner?, :unassigned?
+  def current_user_school
+    current_user&.school_id
+  end
+
+  helper_method :teacher?, :admin?, :student?, :owner?, :unassigned?, :current_user_school
 
   protect_from_forgery with: :exception
 

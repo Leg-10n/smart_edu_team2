@@ -4,7 +4,7 @@ class UsersController < ApplicationController
     attr_reader :users # for testings
     include Pagy::Backend
     def index
-      @pagy, @users = pagy(User.all)
+      @pagy, @users = pagy(user_in_school)
     end
 
     # GET /users/1 or /users/1.json
@@ -65,5 +65,9 @@ class UsersController < ApplicationController
       else
         params.require(:user).permit(:email_address, :password, :password_confirmation)
       end
+    end
+
+    def user_in_school
+      User.where(school_id: current_user.school_id)
     end
 end
