@@ -7,7 +7,7 @@ class StudentsController < ApplicationController
   include Pagy::Backend
   # GET /students or /students.json
   def index
-    @pagy, @students = pagy(Student.kept)
+    @pagy, @students = pagy(student_in_school.kept)
   end
 
   # GET /students/1 or /students/1.json
@@ -33,6 +33,7 @@ class StudentsController < ApplicationController
   # POST /students or /students.json
   def create
     @student = Student.new(student_params)
+    @student.school_id = current_user.school_id
     # student.
     respond_to do |format|
       if @student.save
@@ -82,6 +83,6 @@ class StudentsController < ApplicationController
     end
 
     def student_in_school
-      Student.where()
+      Student.where(school_id: current_user.school_id)
     end
 end
