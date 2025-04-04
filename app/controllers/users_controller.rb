@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
     def create
       @user = User.new(user_params)
-
+      user.school_id = current_user.school_id
       respond_to do |format|
         if @user.save
           format.html { redirect_to @user, notice: "User was successfully created." }
@@ -60,10 +60,10 @@ class UsersController < ApplicationController
 
     def user_params
       if admin? || owner?
-        params.require(:user).permit(:email_address, :password, :password_confirmation, :role)
+        params.require(:user).permit(:email_address, :password, :password_confirmation, :role, :first_name, :last_name)
         # params.require(:user).permit(:email_address, :password, :password_confirmation)
       else
-        params.require(:user).permit(:email_address, :password, :password_confirmation)
+        params.require(:user).permit(:email_address, :password, :password_confirmation, :first_name, :last_name)
       end
     end
 
