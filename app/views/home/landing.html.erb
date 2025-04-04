@@ -1,16 +1,173 @@
+landing
+
 <!-- app/views/home/landing.html.erb -->
 <% content_for :title, "Welcome to SmartEdu" %>
 
-<div class="min-h-screen flex items-center justify-center px-4 bg-gradient-to-r from-blue-500 to-purple-500">
-  <div class="bg-white bg-opacity-75 p-8 rounded-lg text-center min-w-[32rem] shadow-2xl">
-    <h1 class="text-3xl font-bold mb-4">SmartEdu: The Future of School Check-ins</h1>
-    <p class="mb-6">
-      Simplify attendance tracking and streamline your school operations with SmartEdu!
-      Enjoy features like QR code check-ins, multi-tenant capabilities, and more.
-    </p>
-    <%= link_to "Log In", new_session_path, class: "btn btn-primary btn-wide w-full mt-2" %>
-    <div class="mt-3">
-      <%= link_to "Sign Up", new_signup_path, class: "btn btn-secondary w-full" %>
+<!-- Navigation Bar -->
+<nav class="fixed top-0 left-0 w-full bg-white shadow-md py-3 px-6 flex justify-between items-center z-50">
+  <h1 class="text-xl font-bold text-gray-900"><%= render "shared/logo_text" %></h1>
+  <div>
+    <%= link_to "Log In", new_session_path, class: "text-gray-700 hover:text-blue-600 px-4" %>
+    <%= link_to "Sign Up", new_signup_path, class: "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" %>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="min-h-screen flex flex-col items-center justify-center text-center px-6 bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+  <h2 class="text-4xl font-extrabold mb-4">A Revolutionary Solution to Attendance Checking.</h2>
+  <p class="text-lg max-w-xl">Easily track attendance, manage students and teachers, and streamline operations with our intuitive solution.</p>
+</section>
+
+<!-- Information Sections -->
+<section class="py-16 px-6 bg-gray-100">
+  <div class="max-w-4xl mx-auto">
+    <h3 class="text-2xl font-bold text-center mb-8">We're the Best in Attendance Management</h3>
+    
+    <div class="grid gap-6 md:grid-cols-3">
+      <!-- Hassle-free QR Check-ins -->
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h4 class="text-xl font-semibold">
+          <i class="fas fa-qrcode mr-2"></i> Hassle-free QR Check-ins
+        </h4>
+        <p class="text-gray-600 mt-2">Make roll-calling, technical difficulties, and wasted class-time a thing of the past.</p>
+      </div>
+      
+      <!-- Integrated Student Management -->
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h4 class="text-xl font-semibold">
+          <i class="fa-solid fa-children"></i> Integrated Student Management
+        </h4>
+        <p class="text-gray-600 mt-2">Manage and organize students, teachers, and classrooms intuitively.</p>
+      </div>
+      
+      <!-- Privacy & Data Security -->
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h4 class="text-xl font-semibold">
+          <i class="fas fa-shield-alt mr-2"></i> Privacy & Data Security
+        </h4>
+        <p class="text-gray-600 mt-2">Your data is our priority. We ensure top-notch security for your school and student information.</p>
+      </div>
+
+      <!-- Join Us No Matter Where You Are -->
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h4 class="text-xl font-semibold">
+          <i class="fa-solid fa-earth-americas"></i> Join Us No Matter Where You Are
+        </h4>
+        <p class="text-gray-600 mt-2">We offer our services to any educational institution all around the entirety of the globe!</p>
+      </div>
+
+      <!-- Join Us No Matter Where You Are -->
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h4 class="text-xl font-semibold">
+          <i class="fa-solid fa-shield-heart"></i> Safety and Accountability
+        </h4>
+        <p class="text-gray-600 mt-2">Parents of your students no longer need to worry about safety due to our accountability system.</p>
+      </div>
+
+      <!-- Join Us No Matter Where You Are -->
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h4 class="text-xl font-semibold">
+          <i class="fa-solid fa-money-check-dollar"></i> Subscription Based Service
+        </h4>
+        <p class="text-gray-600 mt-2">Don't like our service? Cancel your monthly subscription any time without any additional fees.</p>
+      </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-16 px-6 bg-white">
+  <div class="max-w-4xl mx-auto text-center">
+    <h3 class="text-2xl font-bold mb-6">Trusted by Schools, Teachers, and Students Worldwide.</h3>
+    
+    <div class="grid gap-6 md:grid-cols-3">
+      <div class="p-6 rounded-lg shadow-md bg-blue-100">
+        <h4 class="text-3xl font-bold text-blue-600"><%= number_with_delimiter(@total_schools) %></h4>
+        <p class="text-gray-700">Schools Registered</p>
+      </div>
+      <div class="p-6 rounded-lg shadow-md bg-purple-100">
+        <h4 class="text-3xl font-bold text-purple-600"><%= number_with_delimiter(@total_students) %></h4>
+        <p class="text-gray-700">Students Enrolled</p>
+      </div>
+      <div class="p-6 rounded-lg shadow-md bg-green-100">
+        <h4 class="text-3xl font-bold text-green-600">Online</h4>
+        <p class="text-gray-700">Server Status</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Information Sections -->
+<section class="py-16 px-6 bg-gradient-to-r from-blue-500 to-purple-500">
+  <div class="max-w-4xl mx-auto">
+    <h3 class="text-2xl font-bold text-center mb-8 text-white">Still not convinced? Checkout our infrastructure!</h3>
+    
+    <div class="grid gap-6 md:grid-cols-3">
+      <!-- Open Source Transparency -->
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h4 class="text-xl font-semibold">
+          <i class="fa-brands fa-github"></i> 
+          <a href="https://github.com/Leg-10n/smart_edu_team2" target="_blank" class="text-blue-600 hover:underline">Open Source Transparency</a>
+        </h4>
+        <p class="text-gray-600 mt-2">We let you check the code that powers our service so that you can be sure nothing sketchy is going on.</p>
+      </div>
+      
+      <!-- Ruby on Rails with CI/CD -->
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h4 class="text-xl font-semibold">
+          <i class="fa-solid fa-code"></i> Ruby on Rails with CI/CD
+        </h4>
+        <p class="text-gray-600 mt-2">We use robust technology and frameworks to ensure our service is unbreakable and continuous.</p>
+      </div>
+
+      <!-- Digital Ocean Hosting -->
+      <div class="bg-white p-6 rounded-lg shadow-md text-center">
+        <h4 class="text-xl font-semibold">
+          <i class="fa-brands fa-digital-ocean"></i> Digital Ocean Hosting
+        </h4>
+        <p class="text-gray-600 mt-2">Our service is hosted on the world’s most trusted server platform, delivering you reliability and security.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-16 bg-gradient-to-br from-blue-500 to-purple-600 text-center text-white">
+  <div class="px-4">
+    <h3 class="text-2xl font-bold mb-4">Sign up now and start managing!</h3>
+    <p class="mb-6">Join our network of thousands of schools that have decided to streamline their attendance management.</p>
+    <%= link_to "Sign Up Now", new_signup_path, class: "bg-white text-blue-600 px-6 py-3 rounded-md text-lg font-semibold shadow-md hover:bg-gray-200" %>
+  </div>
+
+  <!-- Social Media Icons -->
+  <div class="mt-8 flex justify-center px-4">
+    <div class="flex items-center w-full max-w-md justify-between">
+      <a href="https://www.instagram.com" target="_blank" class="text-white hover:text-gray-200">
+        <i class="fab fa-instagram fa-2x"></i>
+      </a>
+      <a href="https://twitter.com" target="_blank" class="text-white hover:text-gray-200">
+        <i class="fab fa-x-twitter fa-2x"></i>
+      </a>
+      <a href="https://www.facebook.com" target="_blank" class="text-white hover:text-gray-200">
+        <i class="fab fa-facebook fa-2x"></i>
+      </a>
+      <a href="https://www.youtube.com" target="_blank" class="text-white hover:text-gray-200">
+        <i class="fab fa-youtube fa-2x"></i>
+      </a>
+      <a href="https://www.tiktok.com" target="_blank" class="text-white hover:text-gray-200">
+        <i class="fab fa-tiktok fa-2x"></i>
+      </a>
+      <a href="https://discord.com" target="_blank" class="text-white hover:text-gray-200">
+        <i class="fab fa-discord fa-2x"></i>
+      </a>
+      <a href="https://www.reddit.com" target="_blank" class="text-white hover:text-gray-200">
+        <i class="fab fa-reddit fa-2x"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-6 text-center text-gray-600 bg-gray-200">
+  &copy; <%= Time.now.year %> SmartEdu. All rights reserved.
+</footer>

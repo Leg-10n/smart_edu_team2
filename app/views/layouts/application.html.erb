@@ -41,6 +41,37 @@
       }
     });
   </script>
-  
+    <script type="text/javascript" src="https://cdn.omise.co/omise.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up OmiseCard once the document is loaded
+            if (typeof OmiseCard !== 'undefined') {
+                OmiseCard.configure({
+                    publicKey: "<%= Rails.application.credentials.dig(:omise, :public_key) %>"
+                });
+            }
+
+            // Handle OmiseCard token created event
+            window.addEventListener('omiseCardTokenCreated', function(event) {
+                if (event.detail) {
+                    // Find the form in the same container as the button that was clicked
+                    var button = event.target;
+                    var form = button.closest('form');
+
+                    // Create a hidden input for the token
+                    var hiddenInput = document.createElement('input');
+                    hiddenInput.setAttribute('type', 'hidden');
+                    hiddenInput.setAttribute('name', 'omise_token');
+                    hiddenInput.setAttribute('value', event.detail);
+
+                    // Add the token to the form
+                    form.appendChild(hiddenInput);
+
+                    // Submit the form
+                    form.submit();
+                }
+            });
+        });
+    </script>
 </body>
   </html>
