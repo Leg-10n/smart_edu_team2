@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_04_025829) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_035309) do
   create_table "attendances", force: :cascade do |t|
     t.integer "student_id"
     t.datetime "timestamp"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "school_id"
+    t.index ["school_id"], name: "index_attendances_on_school_id"
     t.index ["student_id"], name: "index_attendances_on_student_id"
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
@@ -103,6 +105,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_025829) do
     t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end
 
+  add_foreign_key "attendances", "schools"
   add_foreign_key "attendances", "students"
   add_foreign_key "attendances", "users"
   add_foreign_key "payments", "subscriptions"
