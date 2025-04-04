@@ -5,14 +5,14 @@ class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     # Log in a user before running tests
     @user = users(:ownerA) # Use an existing fixture
-
+    sign_in(@user)
     # Match the exact parameter names expected by SessionsController
-    post session_url, params: {
-      email_address: @user.email_address,
-      password: "password"
-    }
+    # post session_url, params: {
+    #   email_address: @user.email_address,
+    #   password: "password"
+    # }
 
-    @subscription = subscriptions(:one)
+    @subscription = subscriptions(:owner_subscription)
   end
 
   test "should get new" do
