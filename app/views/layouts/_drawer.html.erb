@@ -33,7 +33,7 @@
         </li>
       <% end %>
 
-      <% if admin? %>
+      <% if admin? || owner? %>
         <li>
           <%= link_to users_path do %>
             <i class="fa-solid fa-users"></i> Users
@@ -57,7 +57,7 @@
         </li>
       <% end %>
 
-      <% if authenticated? %>
+      <% if owner? %>
         <li>
           <%= link_to subscriptions_path do %>
             <i class="fas fa-credit-card"></i> Subscription

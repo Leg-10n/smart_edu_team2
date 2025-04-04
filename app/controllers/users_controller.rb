@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
-    before_action :require_admin # Only admins can access this controller
+    before_action :require_admin_or_owner # Only admins can access this controller
     attr_reader :user # for testings
     attr_reader :users # for testings
     include Pagy::Backend
     def index
-      @pagy, @users = pagy(User.all)
+      @pagy, @users = pagy(user_in_school)
     end
 
     # GET /users/1 or /users/1.json
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
     def create
       @user = User.new(user_params)
-
+      user.school_id = current_user.school_id
       respond_to do |format|
         if @user.save
           format.html { redirect_to @user, notice: "User was successfully created." }
@@ -59,11 +59,15 @@ class UsersController < ApplicationController
     private
 
     def user_params
-      if admin?
-        params.require(:user).permit(:email_address, :password, :password_confirmation, :role)
+      if admin? || owner?
+        params.require(:user).permit(:email_address, :password, :password_confirmation, :role, :first_name, :last_name)
         # params.require(:user).permit(:email_address, :password, :password_confirmation)
       else
-        params.require(:user).permit(:email_address, :password, :password_confirmation)
+        params.require(:user).permit(:email_address, :password, :password_confirmation, :first_name, :last_name)
       end
+    end
+
+    def user_in_school
+      User.where(school_id: current_user.school_id)
     end
 end

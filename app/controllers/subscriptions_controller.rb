@@ -67,10 +67,17 @@ class SubscriptionsController < ApplicationController
         )
 
         # Update user subscription status
-        current_user.update(
-          subscription_status: "active",
-          subscription_end_date: expires_at
-        )
+        # current_user.update(
+        #   subscription_status: "active",
+        #   subscription_end_date: expires_at
+        # )
+
+        User.where(school_id: current_user.school_id).each do |user|
+          user.update(
+            subscription_status: "active",
+            subscription_end_date: expires_at
+          )
+        end
 
         redirect_to subscription_path(subscription), notice: "Payment successful! Your subscription is now active."
       else
