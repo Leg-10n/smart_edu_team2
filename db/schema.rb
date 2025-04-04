@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_03_173905) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_025829) do
   create_table "attendances", force: :cascade do |t|
     t.integer "student_id"
     t.datetime "timestamp"
@@ -53,7 +53,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_173905) do
     t.string "name"
     t.string "uid", null: false
     t.datetime "discarded_at"
+    t.integer "school_id"
     t.index ["discarded_at"], name: "index_students_on_discarded_at"
+    t.index ["school_id"], name: "index_students_on_school_id"
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -106,6 +108,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_173905) do
   add_foreign_key "payments", "subscriptions"
   add_foreign_key "payments", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "students", "schools"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "users", "schools"
 end
