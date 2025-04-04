@@ -52,8 +52,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_173905) do
   create_table "students", force: :cascade do |t|
     t.string "name"
     t.string "uid", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.datetime "discarded_at"
     t.index ["discarded_at"], name: "index_students_on_discarded_at"
   end
@@ -70,9 +68,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_173905) do
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
+  create_table "tenants", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tenantss", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
+    t.boolean "is_active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "discarded_at"
@@ -80,10 +91,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_173905) do
     t.string "first_name"
     t.string "last_name"
     t.string "uuid", null: false
+    t.integer "school_id"
     t.string "omise_customer_id"
     t.string "subscription_status", default: "free"
     t.datetime "subscription_end_date"
-    t.integer "school_id"
+    t.index ["discarded_at"], name: "index_users_on_discarded_at"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
     t.index ["uuid"], name: "index_users_on_uuid", unique: true

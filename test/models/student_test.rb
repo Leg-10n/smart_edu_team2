@@ -6,8 +6,6 @@
 #  discarded_at :datetime
 #  name         :string
 #  uid          :string           not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
 #
 # Indexes
 #
