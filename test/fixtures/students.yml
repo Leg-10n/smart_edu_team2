@@ -1,5 +1,3 @@
-
-<% for i in 1..100 do %>
 # == Schema Information
 #
 # Table name: students
@@ -8,13 +6,12 @@
 #  discarded_at :datetime
 #  name         :string
 #  uid          :string           not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
 #
 # Indexes
 #
 #  index_students_on_discarded_at  (discarded_at)
 #
+<% for i in 1..100 do %>
 student_<%=i%>:
   name: Student <%=i%>
   uid: <%=i%>
