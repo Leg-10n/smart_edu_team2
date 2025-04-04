@@ -57,7 +57,7 @@
         </li>
       <% end %>
 
-      <% if authenticated? %>
+      <% if owner? %>
         <li>
           <%= link_to subscriptions_path do %>
             <i class="fas fa-credit-card"></i> Subscription

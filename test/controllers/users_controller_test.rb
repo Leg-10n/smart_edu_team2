@@ -57,7 +57,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       sign_in(user)
       get users_url
       assert_redirected_to root_path
-      assert_equal "You must have role [ admin ] to access the requested page.", flash[:alert]
+      assert_equal "You must have role [ owner or admin ] to access the requested page.", flash[:alert]
     end
   end
 
@@ -66,7 +66,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       sign_in(user)
       get user_url(@user)
       assert_redirected_to root_path
-      assert_equal "You must have role [ admin ] to access the requested page.", flash[:alert]
+      assert_equal "You must have role [ owner or admin ] to access the requested page.", flash[:alert]
     end
   end
 
@@ -77,7 +77,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         post users_url, params: { user: { email_address: "newuser@a1.com", password: "aaaaaaaa", password_confirmation: "aaaaaaaa", role: "teacher" } }
       end
       assert_redirected_to root_path
-      assert_equal "You must have role [ admin ] to access the requested page.", flash[:alert]
+      assert_equal "You must have role [ owner or admin ] to access the requested page.", flash[:alert]
     end
   end
 
@@ -86,7 +86,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       sign_in(user)
       get edit_user_url(@user)
       assert_redirected_to root_path
-      assert_equal "You must have role [ admin ] to access the requested page.", flash[:alert]
+      assert_equal "You must have role [ owner or admin ] to access the requested page.", flash[:alert]
     end
   end
 
@@ -108,7 +108,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       updating_user.reload
       assert_equal "teacher", updating_user.role
       assert_redirected_to root_path
-      assert_equal "You must have role [ admin ] to access the requested page.", flash[:alert]
+      assert_equal "You must have role [ owner or admin ] to access the requested page.", flash[:alert]
     end
 
     sign_in(:adminA)

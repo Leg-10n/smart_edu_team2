@@ -1,5 +1,5 @@
 class SubscriptionsController < ApplicationController
-  before_action :require_authentication
+  before_action :require_owner
   before_action :set_subscription, only: [ :show, :cancel ]
 
   def index
