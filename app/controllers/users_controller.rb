@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :require_admin # Only admins can access this controller
+    before_action :require_admin_or_owner # Only admins can access this controller
     attr_reader :user # for testings
     attr_reader :users # for testings
     include Pagy::Backend
