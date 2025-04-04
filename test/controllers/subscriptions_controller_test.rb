@@ -14,7 +14,7 @@ class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
 
     @subscription = subscriptions(:owner_subscription)
   end
-
+  # ignore for now
   # test "should get new" do
   #   get new_subscription_path
   #   assert_response :success
