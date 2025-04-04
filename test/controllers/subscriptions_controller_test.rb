@@ -4,7 +4,7 @@ require "test_helper"
 class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     # Log in a user before running tests
-    @user = users(:one) # Use an existing fixture
+    @user = users(:ownerA) # Use an existing fixture
 
     # Match the exact parameter names expected by SessionsController
     post session_url, params: {
