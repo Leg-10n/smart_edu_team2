@@ -5,7 +5,7 @@ class AttendancesController < ApplicationController
 
   # GET /attendances or /attendances.json
   def index
-    @pagy, @attendances = pagy(Attendance.all)
+    @pagy, @attendances = pagy(Attendance.where(school_id: current_user.school_id))
   end
 
   # GET /attendances/1 or /attendances/1.json
@@ -44,7 +44,7 @@ class AttendancesController < ApplicationController
         student = Student.find_by(uid: permitted_params[:uid])
 
         # If no student found, show an error
-        unless student
+        unless student || student&.school_id == current_user.school_id
           Rails.logger.debug "Student not found for UID: #{permitted_params[:uid]}"
           return respond_to do |format|
             format.html { redirect_to new_attendance_path, alert: "Invalid QR code. Student not found." }
@@ -59,6 +59,8 @@ class AttendancesController < ApplicationController
           user_id: current_user.id  # Assuming you're using the current logged-in user
         )
       end
+
+      @attendance.school_id = current_user.school_id
 
       # Save the attendance and respond accordingly
 
