@@ -59,7 +59,7 @@ class UsersController < ApplicationController
     private
 
     def user_params
-      if admin?
+      if admin? || owner?
         params.require(:user).permit(:email_address, :password, :password_confirmation, :role)
         # params.require(:user).permit(:email_address, :password, :password_confirmation)
       else
